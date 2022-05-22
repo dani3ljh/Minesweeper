@@ -169,14 +169,15 @@ MonoBehaviour:
   cellFolder: {fileID: 2012467821}
   cellBlank: {fileID: -1245595124908343168, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellUnchecked: {fileID: 7868535118147067289, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell1: {fileID: 754334577844753409, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell2: {fileID: 6397999009731111452, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell3: {fileID: -5961404721340164942, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell4: {fileID: -2025472624686135625, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell5: {fileID: 2835149172500896349, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell6: {fileID: -6649681457660573240, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell7: {fileID: 2085528991243181363, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cell8: {fileID: -2166235467193450904, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  cellNumbers:
+  - {fileID: 754334577844753409, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: 6397999009731111452, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: -5961404721340164942, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: -2025472624686135625, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: 2835149172500896349, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: -6649681457660573240, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: 2085528991243181363, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: -2166235467193450904, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellTriggeredMine: {fileID: 2117776403335930261, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellNonTriggeredMine: {fileID: 6055628884902258786, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellCrossedMine: {fileID: 8399218329143311966, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}

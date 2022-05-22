@@ -16,67 +16,163 @@ public class Gamemanager : MonoBehaviour
 	[Header("Cell Textures")]
 	[SerializeField] private Sprite cellBlank;
 	[SerializeField] private Sprite cellUnchecked;
-	[SerializeField] private Sprite cell1;
-	[SerializeField] private Sprite cell2;
-	[SerializeField] private Sprite cell3;
-	[SerializeField] private Sprite cell4;
-	[SerializeField] private Sprite cell5;
-	[SerializeField] private Sprite cell6;
-	[SerializeField] private Sprite cell7;
-	[SerializeField] private Sprite cell8;
+	[SerializeField] private Sprite[] cellNumbers;
 	[SerializeField] private Sprite cellTriggeredMine;
 	[SerializeField] private Sprite cellNonTriggeredMine;
 	[SerializeField] private Sprite cellCrossedMine;
 	[SerializeField] private Sprite cellFlagged;
 
 	private GameObject[,] cells;
+	private SpriteRenderer[,] cellSpriteRenderers;
+	private bool[,] cellsThatHaveBeenMined;
 	private bool[,] mines;
+	private float[] xCenters;
+	private float[] yCenters;
 
 	private void Start()
 	{
 		cells = new GameObject[width, height];
+		cellsThatHaveBeenMined = new bool[width, height];
+		cellSpriteRenderers = new SpriteRenderer[width, height];
 		mines = GenerateRandomMines(mineAmount, width, height);
+		xCenters = new float[width];
+		yCenters = new float[height];
 		for(int x = 0; x < width; x++)
 		{
 			for(int y = 0; y < height; y++)
 			{
 				GameObject cell = PlaceCell(x, y, width, height);
 				cells[x, y] = cell;
+				xCenters[x] = cell.transform.position.x;
+				yCenters[y] = cell.transform.position.y;
 			}
 		}
 	}
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonUp(0))
-        {
+	private void Update()
+	{
+		if (Input.GetMouseButtonUp(0))
+		{
 			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y, width, height);
-			Debug.Log($"Mouse logged at ({indexes[0]}, {indexes[1]})");
+			MineCell(indexes[0], indexes[1], width, height, mines);
 		}
-    }
+	}
 
-    private GameObject PlaceCell(int x, int y, int w, int h)
+	private void MineCell(int x, int y, int w, int h, bool[,] twoDMineArr)
+	{
+		if (cellsThatHaveBeenMined[x, y]) return;
+		cellsThatHaveBeenMined[x, y] = true;
+		int cellNumber = GetCellType(x, y, twoDMineArr);
+		if(cellNumber == -1)
+        {
+			Debug.Log("You Died");
+			cellSpriteRenderers[x, y].sprite = cellTriggeredMine;
+			return;
+        }
+		if(cellNumber != 0)
+        {
+			cellSpriteRenderers[x, y].sprite = cellNumbers[cellNumber - 1];
+			return;
+        }
+
+		cellSpriteRenderers[x, y].sprite = cellBlank;
+
+		int[,] indexOffsets = new int[8, 2] {
+			{ 1, 1 },
+			{ 0, 1 },
+			{ -1, 1 },
+			{ 1, 0 },
+			{ -1, 0 },
+			{ 1, -1 },
+			{ 0, -1 },
+			{ -1, -1 }
+		};
+		if (x == 0)
+		{
+			indexOffsets[2, 0] = 0;
+			indexOffsets[4, 0] = 0;
+			indexOffsets[7, 0] = 0;
+			indexOffsets[2, 1] = 0;
+			indexOffsets[4, 1] = 0;
+			indexOffsets[7, 1] = 0;
+		}
+		if (x == w - 1)
+		{
+			indexOffsets[0, 0] = 0;
+			indexOffsets[3, 0] = 0;
+			indexOffsets[5, 0] = 0;
+			indexOffsets[0, 1] = 0;
+			indexOffsets[3, 1] = 0;
+			indexOffsets[5, 1] = 0;
+		}
+		if (y == 0)
+		{
+			indexOffsets[5, 0] = 0;
+			indexOffsets[6, 0] = 0;
+			indexOffsets[7, 0] = 0;
+			indexOffsets[5, 1] = 0;
+			indexOffsets[6, 1] = 0;
+			indexOffsets[7, 1] = 0;
+		}
+		if (y == h - 1)
+		{
+			indexOffsets[0, 0] = 0;
+			indexOffsets[1, 0] = 0;
+			indexOffsets[2, 0] = 0;
+			indexOffsets[0, 1] = 0;
+			indexOffsets[1, 1] = 0;
+			indexOffsets[2, 1] = 0;
+		}
+
+		for (int i = 0; i < 8; i++)
+        {
+			MineCell(x + indexOffsets[i, 0], y + indexOffsets[i, 1], w, h, twoDMineArr);
+        }
+	}
+
+	private GameObject PlaceCell(int x, int y, int w, int h)
 	{
 		float scale = 10f / h;
-		float transformedX = (w * scale * -0.5f) + 0.5f + (x * scale);
+		float transformedX = (w * scale * -0.5f) + scale / 2 + (x * scale);
 		float transformedY = 5 - (scale / 2) - (y * scale);
 		GameObject cell = Instantiate(cellPrefab, new Vector3(transformedX, transformedY, 0), new Quaternion(0,0,0,0));
 		cell.transform.SetParent(cellFolder);
 		cell.transform.localScale = new Vector3(scale, scale, scale) * 3f;
-		cell.GetComponent<SpriteRenderer>().sprite = cellUnchecked;
+		cellSpriteRenderers[x, y] = cell.GetComponent<SpriteRenderer>();
+		cellSpriteRenderers[x, y].sprite = cellUnchecked;
 		cell.name = $"Cell ({x}, {y})";
 		return cell;
 	}
 	
 	private int[] GetIndexesFromPoint(float x, float y, int w, int h)
-    {
+	{
 		int[] indexes = new int[2];
 		float scale = 10f / h;
-		indexes[0] = (int)Mathf.Round((x + (w * scale) / 2 - 1 / 2) / scale)+1;
-		indexes[1] = (int)Mathf.Round((5-(scale/2)-y)/scale);
+		int xIndex = -1;
+		int yIndex = -1;
+		for (int i = 0; i < w; i++)
+		{
+			float differance = Mathf.Abs(x - xCenters[i]);
+			if (differance <= (scale / 2))
+			{
+				xIndex = i;
+				break;
+			}
+		}
+		for (int i = 0; i < h; i++)
+		{
+			float differance = Mathf.Abs(y - yCenters[i]);
+			if (differance <= (scale / 2))
+			{
+				yIndex = i;
+				break;
+			}
+		}
+		indexes[0] = xIndex;
+		indexes[1] = yIndex;
 		return indexes;
-    }
+	}
 
 	private bool[,] GenerateRandomMines(int amountOfMines, int w, int h)
 	{
