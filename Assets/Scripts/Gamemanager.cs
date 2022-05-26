@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Gamemanager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private int height;
 	[SerializeField] private int mineAmount;
 
-	[Header("Game Objects")]
+	[Header("Cell Data")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
 
@@ -22,27 +23,39 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private Sprite cellCrossedMine;
 	[SerializeField] private Sprite cellFlagged;
 
+	// Cell Data 2D Array with length [width, height]
 	private GameObject[,] cells;
 	private SpriteRenderer[,] cellSpriteRenderers;
-	private bool[,] cellsThatHaveBeenMined;
+	private int[,] cellStatuses;
 	private bool[,] mines;
+
+	// Lists of centers of cells
 	private float[] xCenters;
 	private float[] yCenters;
 
+	// Checks when you die
+	private bool isAlive;
+
 	private void Start()
 	{
+		isAlive = true;
+
 		cells = new GameObject[width, height];
-		cellsThatHaveBeenMined = new bool[width, height];
+		cellStatuses = new int[width, height];
 		cellSpriteRenderers = new SpriteRenderer[width, height];
+
 		mines = GenerateRandomMines(mineAmount, width, height);
+		
 		xCenters = new float[width];
 		yCenters = new float[height];
+		
 		for(int x = 0; x < width; x++)
 		{
 			for(int y = 0; y < height; y++)
 			{
 				GameObject cell = PlaceCell(x, y, width, height);
 				cells[x, y] = cell;
+				cellStatuses[x, y] = 0;
 				xCenters[x] = cell.transform.position.x;
 				yCenters[y] = cell.transform.position.y;
 			}
@@ -51,30 +64,51 @@ public class Gamemanager : MonoBehaviour
 
 	private void Update()
 	{
+		if (!isAlive) return;
 		if (Input.GetMouseButtonUp(0))
 		{
 			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y, width, height);
-			MineCell(indexes[0], indexes[1], width, height, mines);
+			if(cellStatuses[indexes[0], indexes[1]] == 0)
+            {
+				MineCell(indexes[0], indexes[1], width, height, mines);
+			}
+		}
+        if (Input.GetMouseButtonUp(1))
+        {
+			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y, width, height);
+			if(cellStatuses[indexes[0], indexes[1]] == 0)
+            {
+				cellSpriteRenderers[indexes[0], indexes[1]].sprite = cellFlagged;
+				cellStatuses[indexes[0], indexes[1]] = 10;
+            }
 		}
 	}
 
 	private void MineCell(int x, int y, int w, int h, bool[,] twoDMineArr)
 	{
-		if (cellsThatHaveBeenMined[x, y]) return;
-		cellsThatHaveBeenMined[x, y] = true;
+		if (cellStatuses[x, y] != 0) return;
+
 		int cellNumber = GetCellType(x, y, twoDMineArr);
+
+		cellStatuses[x, y] = cellNumber;
+
 		if(cellNumber == -1)
-        {
-			Debug.Log("You Died");
+		{
+			isAlive = false;
 			cellSpriteRenderers[x, y].sprite = cellTriggeredMine;
+			Invoke(nameof(ResetScene), 5f);
 			return;
-        }
+		}
+
 		if(cellNumber != 0)
-        {
+		{
 			cellSpriteRenderers[x, y].sprite = cellNumbers[cellNumber - 1];
 			return;
-        }
+		}
+
+		cellStatuses[x, y] = 9;
 
 		cellSpriteRenderers[x, y].sprite = cellBlank;
 
@@ -126,9 +160,9 @@ public class Gamemanager : MonoBehaviour
 		}
 
 		for (int i = 0; i < 8; i++)
-        {
+		{
 			MineCell(x + indexOffsets[i, 0], y + indexOffsets[i, 1], w, h, twoDMineArr);
-        }
+		}
 	}
 
 	private GameObject PlaceCell(int x, int y, int w, int h)
@@ -274,5 +308,10 @@ public class Gamemanager : MonoBehaviour
 			}
 		}
 		return total;
+	}
+
+	public static void ResetScene()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 }
