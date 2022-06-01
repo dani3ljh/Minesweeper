@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519420032}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   m_Layer: 0
@@ -165,6 +166,7 @@ MonoBehaviour:
   width: 16
   height: 13
   mineAmount: 40
+  resetDelay: 2
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
   cellBlank: {fileID: -1245595124908343168, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
@@ -182,6 +184,7 @@ MonoBehaviour:
   cellNonTriggeredMine: {fileID: 6055628884902258786, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellCrossedMine: {fileID: 8399218329143311966, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellFlagged: {fileID: 6332592771430846871, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  isAlive: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -239,6 +242,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cdd8a668845ab64aafa63684e443b93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xCenters: []
+  yCenters: []
 --- !u!1 &2012467820
 GameObject:
   m_ObjectHideFlags: 0

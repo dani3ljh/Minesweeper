@@ -6,38 +6,40 @@ using UnityEngine.SceneManagement;
 public class Gamemanager : MonoBehaviour
 {
 	[Header("Board Settings")]
-	[SerializeField] private int width;
-	[SerializeField] private int height;
+	public int width;
+	public int height;
 	[SerializeField] private int mineAmount;
+	[SerializeField] private float resetDelay;
 
 	[Header("Cell Data")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
 
 	[Header("Cell Textures")]
-	[SerializeField] private Sprite cellBlank;
-	[SerializeField] private Sprite cellUnchecked;
-	[SerializeField] private Sprite[] cellNumbers;
-	[SerializeField] private Sprite cellTriggeredMine;
-	[SerializeField] private Sprite cellNonTriggeredMine;
-	[SerializeField] private Sprite cellCrossedMine;
-	[SerializeField] private Sprite cellFlagged;
+	public Sprite cellBlank;
+	public Sprite cellUnchecked;
+	public Sprite[] cellNumbers;
+	public Sprite cellTriggeredMine;
+	public Sprite cellNonTriggeredMine;
+	public Sprite cellCrossedMine;
+	public Sprite cellFlagged;
 
 	// Cell Data 2D Array with length [width, height]
 	private GameObject[,] cells;
-	private SpriteRenderer[,] cellSpriteRenderers;
-	private int[,] cellStatuses;
-	private bool[,] mines;
-
-	// Lists of centers of cells
-	private float[] xCenters;
-	private float[] yCenters;
-
+	[HideInInspector] public SpriteRenderer[,] cellSpriteRenderers;
+	[HideInInspector] public int[,] cellStatuses;
+	[HideInInspector] public bool[,] mines;
+	
 	// Checks when you die
-	private bool isAlive;
+	[HideInInspector] public bool isAlive;
 
+	// Scripts
+	private MouseManager mm;
+	
 	private void Start()
 	{
+		mm = gameObject.GetComponent<MouseManager>();
+
 		isAlive = true;
 
 		cells = new GameObject[width, height];
@@ -46,8 +48,8 @@ public class Gamemanager : MonoBehaviour
 
 		mines = GenerateRandomMines(mineAmount, width, height);
 		
-		xCenters = new float[width];
-		yCenters = new float[height];
+		mm.xCenters = new float[width];
+		mm.yCenters = new float[height];
 		
 		for(int x = 0; x < width; x++)
 		{
@@ -56,37 +58,13 @@ public class Gamemanager : MonoBehaviour
 				GameObject cell = PlaceCell(x, y, width, height);
 				cells[x, y] = cell;
 				cellStatuses[x, y] = 0;
-				xCenters[x] = cell.transform.position.x;
-				yCenters[y] = cell.transform.position.y;
+				mm.xCenters[x] = cell.transform.position.x;
+				mm.yCenters[y] = cell.transform.position.y;
 			}
 		}
 	}
 
-	private void Update()
-	{
-		if (!isAlive) return;
-		if (Input.GetMouseButtonUp(0))
-		{
-			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y, width, height);
-			if(cellStatuses[indexes[0], indexes[1]] == 0)
-            {
-				MineCell(indexes[0], indexes[1], width, height, mines);
-			}
-		}
-        if (Input.GetMouseButtonUp(1))
-        {
-			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y, width, height);
-			if(cellStatuses[indexes[0], indexes[1]] == 0)
-            {
-				cellSpriteRenderers[indexes[0], indexes[1]].sprite = cellFlagged;
-				cellStatuses[indexes[0], indexes[1]] = 10;
-            }
-		}
-	}
-
-	private void MineCell(int x, int y, int w, int h, bool[,] twoDMineArr)
+	public void MineCell(int x, int y, int w, int h, bool[,] twoDMineArr)
 	{
 		if (cellStatuses[x, y] != 0) return;
 
@@ -98,7 +76,7 @@ public class Gamemanager : MonoBehaviour
 		{
 			isAlive = false;
 			cellSpriteRenderers[x, y].sprite = cellTriggeredMine;
-			Invoke(nameof(ResetScene), 5f);
+			Invoke(nameof(Start), resetDelay);
 			return;
 		}
 
@@ -179,35 +157,6 @@ public class Gamemanager : MonoBehaviour
 		return cell;
 	}
 	
-	private int[] GetIndexesFromPoint(float x, float y, int w, int h)
-	{
-		int[] indexes = new int[2];
-		float scale = 10f / h;
-		int xIndex = -1;
-		int yIndex = -1;
-		for (int i = 0; i < w; i++)
-		{
-			float differance = Mathf.Abs(x - xCenters[i]);
-			if (differance <= (scale / 2))
-			{
-				xIndex = i;
-				break;
-			}
-		}
-		for (int i = 0; i < h; i++)
-		{
-			float differance = Mathf.Abs(y - yCenters[i]);
-			if (differance <= (scale / 2))
-			{
-				yIndex = i;
-				break;
-			}
-		}
-		indexes[0] = xIndex;
-		indexes[1] = yIndex;
-		return indexes;
-	}
-
 	private bool[,] GenerateRandomMines(int amountOfMines, int w, int h)
 	{
 		bool[,] twoDMineArr = new bool[w,h];
@@ -310,8 +259,4 @@ public class Gamemanager : MonoBehaviour
 		return total;
 	}
 
-	public static void ResetScene()
-	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
 }
