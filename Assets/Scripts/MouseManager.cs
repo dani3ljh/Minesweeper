@@ -4,28 +4,25 @@ using UnityEngine;
 
 public class MouseManager : MonoBehaviour
 {
-	private Gamemanager gm;
-
 	// Lists of centers of cells
 	[HideInInspector] public float[] xCenters;
 	[HideInInspector] public float[] yCenters;
 
+	private Gamemanager gm;
+
 	private int width;
 	private int height;
-	private bool[,] mines;
+	private int mineAmount;
 	private Sprite cellFlagged;
 	private Sprite cellUnchecked;
 
 	void Start()
     {
 		gm = gameObject.GetComponent<Gamemanager>();
-
-		width = gm.width;
-		height = gm.height;
-		mines = gm.mines;
 		cellFlagged = gm.cellFlagged;
 		cellUnchecked = gm.cellUnchecked;
-    }
+		gm.cameraBackgroundColor = Camera.main.backgroundColor;
+	}
 
     void Update()
     {
@@ -39,7 +36,8 @@ public class MouseManager : MonoBehaviour
 			if (indexes[0] == -1 || indexes[1] == -1) return;
 			if (gm.cellStatuses[indexes[0], indexes[1]] == 0)
 			{
-				gm.MineCell(indexes[0], indexes[1], width, height, mines);
+				gm.MineCell(indexes[0], indexes[1], width, height);
+				if (gm.cellsMined == width * height - mineAmount) gm.Win();
 			}
 		}
 
@@ -90,5 +88,12 @@ public class MouseManager : MonoBehaviour
 		indexes[0] = xIndex;
 		indexes[1] = yIndex;
 		return indexes;
+	}
+
+	public void SetVariables(int w, int h, int m)
+    {
+		width = w;
+		height = h;
+		mineAmount = m;
 	}
 }

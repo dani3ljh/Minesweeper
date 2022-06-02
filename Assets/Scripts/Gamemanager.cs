@@ -6,10 +6,11 @@ using UnityEngine.SceneManagement;
 public class Gamemanager : MonoBehaviour
 {
 	[Header("Board Settings")]
-	public int width;
-	public int height;
+	[SerializeField] private int width;
+	[SerializeField] private int height;
 	[SerializeField] private int mineAmount;
-	[SerializeField] private float resetDelay;
+	[SerializeField] private float loseResetDelay;
+	[SerializeField] private float winResetDelay;
 
 	[Header("Cell Data")]
 	[SerializeField] private GameObject cellPrefab;
@@ -28,26 +29,33 @@ public class Gamemanager : MonoBehaviour
 	private GameObject[,] cells;
 	[HideInInspector] public SpriteRenderer[,] cellSpriteRenderers;
 	[HideInInspector] public int[,] cellStatuses;
-	[HideInInspector] public bool[,] mines;
+	private bool[,] mines;
 	
-	// Checks when you die
+	// Game Data
 	[HideInInspector] public bool isAlive;
+	[HideInInspector] public int cellsMined;
 
 	// Scripts
 	private MouseManager mm;
+
+	// Color
+	[HideInInspector] public Color cameraBackgroundColor;
 	
 	private void Start()
 	{
 		mm = gameObject.GetComponent<MouseManager>();
 
 		isAlive = true;
+		cellsMined = 0;
 
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];
 		cellSpriteRenderers = new SpriteRenderer[width, height];
 
 		mines = GenerateRandomMines(mineAmount, width, height);
-		
+
+		mm.SetVariables(width, height, mineAmount);
+
 		mm.xCenters = new float[width];
 		mm.yCenters = new float[height];
 		
@@ -64,23 +72,36 @@ public class Gamemanager : MonoBehaviour
 		}
 	}
 
-	public void MineCell(int x, int y, int w, int h, bool[,] twoDMineArr)
+	public void MineCell(int x, int y, int w, int h)
 	{
 		if (cellStatuses[x, y] != 0) return;
 
-		int cellNumber = GetCellType(x, y, twoDMineArr);
+		int cellNumber = GetCellType(x, y, mines);
 
 		cellStatuses[x, y] = cellNumber;
 
 		if(cellNumber == -1)
 		{
+			if(cellsMined == 0)
+            {
+				mines[x, y] = false;
+				cellStatuses[x, y] = 0;
+				int[][] freeIndexes = GetFreeIndexes(mines.ToJaggedArray());
+				int index = Random.Range(0, freeIndexes.Length);
+				mines[freeIndexes[index][0], freeIndexes[index][1]] = true;
+				MineCell(x, y, w, h);
+				return;
+			}
+
 			isAlive = false;
 			cellSpriteRenderers[x, y].sprite = cellTriggeredMine;
-			Invoke(nameof(Start), resetDelay);
+			Invoke(nameof(Start), loseResetDelay);
 			return;
 		}
 
-		if(cellNumber != 0)
+		cellsMined++;
+
+		if (cellNumber != 0)
 		{
 			cellSpriteRenderers[x, y].sprite = cellNumbers[cellNumber - 1];
 			return;
@@ -139,7 +160,7 @@ public class Gamemanager : MonoBehaviour
 
 		for (int i = 0; i < 8; i++)
 		{
-			MineCell(x + indexOffsets[i, 0], y + indexOffsets[i, 1], w, h, twoDMineArr);
+			MineCell(x + indexOffsets[i, 0], y + indexOffsets[i, 1], w, h);
 		}
 	}
 
@@ -159,7 +180,7 @@ public class Gamemanager : MonoBehaviour
 	
 	private bool[,] GenerateRandomMines(int amountOfMines, int w, int h)
 	{
-		bool[,] twoDMineArr = new bool[w,h];
+		bool[,] twoDMineArr = new bool[w, h];
 		for(int i = 0; i < amountOfMines; i++)
 		{
 			int[][] freeIndexes = GetFreeIndexes(twoDMineArr.ToJaggedArray());
@@ -259,4 +280,11 @@ public class Gamemanager : MonoBehaviour
 		return total;
 	}
 
+	public void Win()
+    {
+		isAlive = false;
+		Camera.main.backgroundColor = new Color(0, 256, 0);
+		Debug.Log("You won");
+		Invoke(nameof(Start), winResetDelay);
+	}
 }

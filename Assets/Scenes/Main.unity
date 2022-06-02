@@ -166,7 +166,8 @@ MonoBehaviour:
   width: 16
   height: 13
   mineAmount: 40
-  resetDelay: 2
+  loseResetDelay: 3
+  winResetDelay: 4
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
   cellBlank: {fileID: -1245595124908343168, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
@@ -185,6 +186,7 @@ MonoBehaviour:
   cellCrossedMine: {fileID: 8399218329143311966, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellFlagged: {fileID: 6332592771430846871, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   isAlive: 0
+  cellsMined: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
