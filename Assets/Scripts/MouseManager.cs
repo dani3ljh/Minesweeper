@@ -13,19 +13,20 @@ public class MouseManager : MonoBehaviour
 	private int width;
 	private int height;
 	private int mineAmount;
+	private bool[,] mines;
 	private Sprite cellFlagged;
 	private Sprite cellUnchecked;
 
 	void Start()
-    {
+	{
 		gm = gameObject.GetComponent<Gamemanager>();
 		cellFlagged = gm.cellFlagged;
 		cellUnchecked = gm.cellUnchecked;
 		gm.cameraBackgroundColor = Camera.main.backgroundColor;
 	}
 
-    void Update()
-    {
+	void Update()
+	{
 		if (!gm.isAlive) return;
 
 		// Left Click
@@ -33,11 +34,20 @@ public class MouseManager : MonoBehaviour
 		{
 			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
-			if (indexes[0] == -1 || indexes[1] == -1) return;
-			if (gm.cellStatuses[indexes[0], indexes[1]] == 0)
+			int x = indexes[0];
+			int y = indexes[1];
+
+			if (x == -1 || y == -1) return;
+
+			switch (gm.cellStatuses[x, y])
 			{
-				gm.MineCell(indexes[0], indexes[1], width, height);
-				if (gm.cellsMined == width * height - mineAmount) gm.Win();
+				case 0:
+					gm.MineCell(x, y, width, height);
+					if (gm.cellsMined == width * height - mineAmount) gm.Win();
+					break;
+				case int n when (n >= 1 && n <= 8):
+					MiddleClick(x, y, n);
+					break;
 			}
 		}
 
@@ -46,18 +56,108 @@ public class MouseManager : MonoBehaviour
 		{
 			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
-			if (indexes[0] == -1 || indexes[1] == -1) return;
-			if (gm.cellStatuses[indexes[0], indexes[1]] == 0)
+			int x = indexes[0];
+			int y = indexes[1];
+
+			if (x == -1 || y == -1) return;
+
+			switch (gm.cellStatuses[x, y])
 			{
-				gm.cellSpriteRenderers[indexes[0], indexes[1]].sprite = cellFlagged;
-				gm.cellStatuses[indexes[0], indexes[1]] = 10;
-				return;
+				case 0:
+					gm.cellSpriteRenderers[x, y].sprite = cellFlagged;
+					gm.cellStatuses[x, y] = 10;
+					break;
+				case 10:
+					gm.cellSpriteRenderers[x, y].sprite = cellUnchecked;
+					gm.cellStatuses[x, y] = 0;
+					break;
 			}
-			if (gm.cellStatuses[indexes[0], indexes[1]] == 10)
+		}
+
+		// Middle Click
+		if (Input.GetMouseButtonUp(2))
+		{
+			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
+			int x = indexes[0];
+			int y = indexes[1];
+
+			if (x == -1 || y == -1) return;
+
+			int cellStatus = gm.cellStatuses[x, y];
+
+			MiddleClick(x, y, cellStatus);
+        }
+	}
+
+	private void MiddleClick(int x, int y, int n)
+    {
+		int totalSurroundingFlags = 0;
+
+		int[,] indexOffsets = new int[8, 2] {
+						{ 1, 1 },
+						{ 0, 1 },
+						{ -1, 1 },
+						{ 1, 0 },
+						{ -1, 0 },
+						{ 1, -1 },
+						{ 0, -1 },
+						{ -1, -1 }
+					};
+		if (x == 0)
+		{
+			indexOffsets[2, 0] = 0;
+			indexOffsets[4, 0] = 0;
+			indexOffsets[7, 0] = 0;
+			indexOffsets[2, 1] = 0;
+			indexOffsets[4, 1] = 0;
+			indexOffsets[7, 1] = 0;
+		}
+		if (x == width - 1)
+		{
+			indexOffsets[0, 0] = 0;
+			indexOffsets[3, 0] = 0;
+			indexOffsets[5, 0] = 0;
+			indexOffsets[0, 1] = 0;
+			indexOffsets[3, 1] = 0;
+			indexOffsets[5, 1] = 0;
+		}
+		if (y == 0)
+		{
+			indexOffsets[5, 0] = 0;
+			indexOffsets[6, 0] = 0;
+			indexOffsets[7, 0] = 0;
+			indexOffsets[5, 1] = 0;
+			indexOffsets[6, 1] = 0;
+			indexOffsets[7, 1] = 0;
+		}
+		if (y == height - 1)
+		{
+			indexOffsets[0, 0] = 0;
+			indexOffsets[1, 0] = 0;
+			indexOffsets[2, 0] = 0;
+			indexOffsets[0, 1] = 0;
+			indexOffsets[1, 1] = 0;
+			indexOffsets[2, 1] = 0;
+		}
+
+		for (int i = 0; i < 8; i++)
+		{
+			int newX = x + indexOffsets[i, 0];
+			int newY = y + indexOffsets[i, 1];
+
+			if (gm.cellStatuses[newX, newY] == 10) totalSurroundingFlags++;
+		}
+
+		if (totalSurroundingFlags == n)
+		{
+			for (int i = 0; i < 8; i++)
 			{
-				gm.cellSpriteRenderers[indexes[0], indexes[1]].sprite = cellUnchecked;
-				gm.cellStatuses[indexes[0], indexes[1]] = 0;
-			} 
+				int newX = x + indexOffsets[i, 0];
+				int newY = y + indexOffsets[i, 1];
+
+				if (gm.cellStatuses[newX, newY] == 0) gm.MineCell(newX, newY, width, height);
+			}
 		}
 	}
 
@@ -90,10 +190,11 @@ public class MouseManager : MonoBehaviour
 		return indexes;
 	}
 
-	public void SetVariables(int w, int h, int m)
-    {
+	public void SetVariables(int w, int h, int mA, bool[,] m)
+	{
 		width = w;
 		height = h;
-		mineAmount = m;
+		mineAmount = mA;
+		mines = m;
 	}
 }

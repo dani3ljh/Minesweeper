@@ -54,7 +54,7 @@ public class Gamemanager : MonoBehaviour
 
 		mines = GenerateRandomMines(mineAmount, width, height);
 
-		mm.SetVariables(width, height, mineAmount);
+		mm.SetVariables(width, height, mineAmount, mines);
 
 		mm.xCenters = new float[width];
 		mm.yCenters = new float[height];
