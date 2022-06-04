@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseManager : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
 	// Lists of centers of cells
 	[HideInInspector] public float[] xCenters;
@@ -43,7 +43,6 @@ public class MouseManager : MonoBehaviour
 			{
 				case 0:
 					gm.MineCell(x, y, width, height);
-					if (gm.cellsMined == width * height - mineAmount) gm.Win();
 					break;
 				case int n when (n >= 1 && n <= 8):
 					MiddleClick(x, y, n);
@@ -87,11 +86,16 @@ public class MouseManager : MonoBehaviour
 			int cellStatus = gm.cellStatuses[x, y];
 
 			MiddleClick(x, y, cellStatus);
-        }
+		}
+
+		// Reset Button
+		if (Input.GetButtonDown("Reset")){
+			gm.Start();
+		}
 	}
 
 	private void MiddleClick(int x, int y, int n)
-    {
+	{
 		int totalSurroundingFlags = 0;
 
 		int[,] indexOffsets = new int[8, 2] {

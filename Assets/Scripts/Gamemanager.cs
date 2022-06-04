@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Gamemanager : MonoBehaviour
@@ -12,9 +13,10 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private float loseResetDelay;
 	[SerializeField] private float winResetDelay;
 
-	[Header("Cell Data")]
+	[Header("Objects")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
+	[SerializeField] private Button button;
 
 	[Header("Cell Textures")]
 	public Sprite cellBlank;
@@ -28,6 +30,13 @@ public class Gamemanager : MonoBehaviour
 	// Cell Data 2D Array with length [width, height]
 	private GameObject[,] cells;
 	[HideInInspector] public SpriteRenderer[,] cellSpriteRenderers;
+	/*
+	 * cellStatus numbers goes as follows:
+	 * 0 is unchecked cell
+	 * 1 through 8 is the checked cell number 1 through 8
+	 * 9 is checked cell blank
+	 * 10 is flagged
+	 */
 	[HideInInspector] public int[,] cellStatuses;
 	private bool[,] mines;
 	
@@ -36,16 +45,20 @@ public class Gamemanager : MonoBehaviour
 	[HideInInspector] public int cellsMined;
 
 	// Scripts
-	private MouseManager mm;
+	private InputManager im;
 
 	// Color
 	[HideInInspector] public Color cameraBackgroundColor;
-	
-	private void Start()
-	{
-		mm = gameObject.GetComponent<MouseManager>();
 
+	private void Awake()
+	{
+		im = gameObject.GetComponent<InputManager>();
+	}
+
+	public void Start()
+	{
 		isAlive = true;
+		button.interactable = true;
 		cellsMined = 0;
 
 		cells = new GameObject[width, height];
@@ -54,10 +67,10 @@ public class Gamemanager : MonoBehaviour
 
 		mines = GenerateRandomMines(mineAmount, width, height);
 
-		mm.SetVariables(width, height, mineAmount, mines);
+		im.SetVariables(width, height, mineAmount, mines);
 
-		mm.xCenters = new float[width];
-		mm.yCenters = new float[height];
+		im.xCenters = new float[width];
+		im.yCenters = new float[height];
 		
 		for(int x = 0; x < width; x++)
 		{
@@ -66,8 +79,8 @@ public class Gamemanager : MonoBehaviour
 				GameObject cell = PlaceCell(x, y, width, height);
 				cells[x, y] = cell;
 				cellStatuses[x, y] = 0;
-				mm.xCenters[x] = cell.transform.position.x;
-				mm.yCenters[y] = cell.transform.position.y;
+				im.xCenters[x] = cell.transform.position.x;
+				im.yCenters[y] = cell.transform.position.y;
 			}
 		}
 	}
@@ -83,7 +96,7 @@ public class Gamemanager : MonoBehaviour
 		if(cellNumber == -1)
 		{
 			if(cellsMined == 0)
-            {
+			{
 				mines[x, y] = false;
 				cellStatuses[x, y] = 0;
 				int[][] freeIndexes = GetFreeIndexes(mines.ToJaggedArray());
@@ -92,14 +105,15 @@ public class Gamemanager : MonoBehaviour
 				MineCell(x, y, w, h);
 				return;
 			}
-
-			isAlive = false;
+			
 			cellSpriteRenderers[x, y].sprite = cellTriggeredMine;
-			Invoke(nameof(Start), loseResetDelay);
+			Lose();
 			return;
 		}
 
 		cellsMined++;
+
+		if (cellsMined == width * height - mineAmount) Win();
 
 		if (cellNumber != 0)
 		{
@@ -281,10 +295,16 @@ public class Gamemanager : MonoBehaviour
 	}
 
 	public void Win()
-    {
+	{
 		isAlive = false;
-		Camera.main.backgroundColor = new Color(0, 256, 0);
-		Debug.Log("You won");
+		button.interactable = false;
 		Invoke(nameof(Start), winResetDelay);
+	}
+
+	private void Lose()
+	{
+		isAlive = false;
+		button.interactable = false;
+		Invoke(nameof(Start), loseResetDelay);
 	}
 }
