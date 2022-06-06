@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
 	private bool[,] mines;
 	private Sprite cellFlagged;
 	private Sprite cellUnchecked;
+	private float startTime;
 
 	void Start()
 	{
@@ -29,6 +30,11 @@ public class InputManager : MonoBehaviour
 	{
 		if (!gm.isAlive) return;
 
+		if (Input.GetMouseButtonDown(0))
+        {
+			startTime = Time.time;
+        }
+
 		// Left Click
 		if (Input.GetMouseButtonUp(0))
 		{
@@ -39,15 +45,13 @@ public class InputManager : MonoBehaviour
 
 			if (x == -1 || y == -1) return;
 
-			switch (gm.cellStatuses[x, y])
-			{
-				case 0:
-					gm.MineCell(x, y, width, height);
-					break;
-				case int n when (n >= 1 && n <= 8):
-					MiddleClick(x, y, n);
-					break;
-			}
+            if (gm.mobileMode && (Time.time - startTime >= gm.mobileModeFlagTime))
+            {
+				RightClick(x, y);
+				return;
+            }
+
+			LeftClick(x, y);
 		}
 
 		// Right Click
@@ -60,17 +64,7 @@ public class InputManager : MonoBehaviour
 
 			if (x == -1 || y == -1) return;
 
-			switch (gm.cellStatuses[x, y])
-			{
-				case 0:
-					gm.cellSpriteRenderers[x, y].sprite = cellFlagged;
-					gm.cellStatuses[x, y] = 10;
-					break;
-				case 10:
-					gm.cellSpriteRenderers[x, y].sprite = cellUnchecked;
-					gm.cellStatuses[x, y] = 0;
-					break;
-			}
+			RightClick(x, y);
 		}
 
 		// Middle Click
@@ -82,10 +76,8 @@ public class InputManager : MonoBehaviour
 			int y = indexes[1];
 
 			if (x == -1 || y == -1) return;
-
-			int cellStatus = gm.cellStatuses[x, y];
-
-			MiddleClick(x, y, cellStatus);
+			
+			MiddleClick(x, y);
 		}
 
 		// Reset Button
@@ -94,7 +86,35 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
-	private void MiddleClick(int x, int y, int n)
+	private void LeftClick(int x, int y)
+    {
+		switch (gm.cellStatuses[x, y])
+		{
+			case 0:
+				gm.MineCell(x, y, width, height);
+				break;
+			case int n when (n >= 1 && n <= 8):
+				MiddleClick(x, y);
+				break;
+		}
+	}
+
+	private void RightClick(int x, int y)
+    {
+		switch (gm.cellStatuses[x, y])
+		{
+			case 0:
+				gm.cellSpriteRenderers[x, y].sprite = cellFlagged;
+				gm.cellStatuses[x, y] = 10;
+				break;
+			case 10:
+				gm.cellSpriteRenderers[x, y].sprite = cellUnchecked;
+				gm.cellStatuses[x, y] = 0;
+				break;
+		}
+	}
+
+	private void MiddleClick(int x, int y)
 	{
 		int totalSurroundingFlags = 0;
 
@@ -153,7 +173,7 @@ public class InputManager : MonoBehaviour
 			if (gm.cellStatuses[newX, newY] == 10) totalSurroundingFlags++;
 		}
 
-		if (totalSurroundingFlags == n)
+		if (totalSurroundingFlags == gm.cellStatuses[x, y])
 		{
 			for (int i = 0; i < 8; i++)
 			{

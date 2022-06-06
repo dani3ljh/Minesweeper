@@ -12,11 +12,11 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private int mineAmount;
 	[SerializeField] private float loseResetDelay;
 	[SerializeField] private float winResetDelay;
+	public float mobileModeFlagTime = 1f;
 
 	[Header("Objects")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
-	[SerializeField] private Button button;
 
 	[Header("Cell Textures")]
 	public Sprite cellBlank;
@@ -43,9 +43,11 @@ public class Gamemanager : MonoBehaviour
 	// Game Data
 	[HideInInspector] public bool isAlive;
 	[HideInInspector] public int cellsMined;
+	/*[HideInInspector]*/ public bool mobileMode;
 
 	// Scripts
 	private InputManager im;
+	private UIManager uim;
 
 	// Color
 	[HideInInspector] public Color cameraBackgroundColor;
@@ -53,12 +55,14 @@ public class Gamemanager : MonoBehaviour
 	private void Awake()
 	{
 		im = gameObject.GetComponent<InputManager>();
+		uim = gameObject.GetComponent<UIManager>();
+		mobileMode = false;
 	}
 
 	public void Start()
 	{
 		isAlive = true;
-		button.interactable = true;
+		uim.resetButton.interactable = true;
 		cellsMined = 0;
 
 		cells = new GameObject[width, height];
@@ -297,14 +301,14 @@ public class Gamemanager : MonoBehaviour
 	public void Win()
 	{
 		isAlive = false;
-		button.interactable = false;
+		uim.resetButton.interactable = false;
 		Invoke(nameof(Start), winResetDelay);
 	}
 
 	private void Lose()
 	{
 		isAlive = false;
-		button.interactable = false;
+		uim.resetButton.interactable = false;
 		Invoke(nameof(Start), loseResetDelay);
 	}
 }
