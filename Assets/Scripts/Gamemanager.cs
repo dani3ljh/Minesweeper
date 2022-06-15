@@ -10,13 +10,16 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private int width;
 	[SerializeField] private int height;
 	[SerializeField] private int mineAmount;
-	[SerializeField] private float loseResetDelay;
-	[SerializeField] private float winResetDelay;
+	public float loseResetDelay;
+	public float winResetDelay;
 	public float mobileModeFlagTime = 1f;
 
 	[Header("Objects")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
+	[SerializeField] private Transform uiCanvas;
+	[SerializeField] private GameObject loseEndScreen;
+	[SerializeField] private GameObject winEndScreen;
 
 	[Header("Cell Textures")]
 	public Sprite cellBlank;
@@ -302,13 +305,21 @@ public class Gamemanager : MonoBehaviour
 	{
 		isAlive = false;
 		uim.resetButton.interactable = false;
-		Invoke(nameof(Start), winResetDelay);
+
+		EndScreen endScreen = Instantiate(winEndScreen, uiCanvas).GetComponent<EndScreen>();
+
+		endScreen.gm = this;
+		endScreen.resetDelay = winResetDelay;
 	}
 
 	private void Lose()
 	{
 		isAlive = false;
 		uim.resetButton.interactable = false;
-		Invoke(nameof(Start), loseResetDelay);
+
+		EndScreen endScreen = Instantiate(loseEndScreen, uiCanvas).GetComponent<EndScreen>();
+
+		endScreen.gm = this;
+		endScreen.resetDelay = loseResetDelay;
 	}
 }

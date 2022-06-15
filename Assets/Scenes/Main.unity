@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -0.5}
-  m_SizeDelta: {x: -28, y: -3}
+  m_AnchoredPosition: {x: 31, y: -0.5}
+  m_SizeDelta: {x: -62, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &153103792
 MonoBehaviour:
@@ -182,10 +182,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -250,10 +250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -422,10 +422,14 @@ MonoBehaviour:
   width: 16
   height: 13
   mineAmount: 40
-  loseResetDelay: 3
-  winResetDelay: 4
+  loseResetDelay: 1
+  winResetDelay: 1
+  mobileModeFlagTime: 0.3
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
+  uiCanvas: {fileID: 158381742}
+  loseEndScreen: {fileID: 2474110470582482907, guid: 16f8007b18590f1428324f53c8453103, type: 3}
+  winEndScreen: {fileID: 6132166947446652994, guid: d18e42f1edf27ad4ab89cee4f842cea0, type: 3}
   cellBlank: {fileID: -1245595124908343168, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellUnchecked: {fileID: 7868535118147067289, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellNumbers:
@@ -655,10 +659,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 4
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -688,7 +692,7 @@ GameObject:
   - component: {fileID: 1076430143}
   - component: {fileID: 1076430142}
   m_Layer: 5
-  m_Name: ResetButton
+  m_Name: Reset Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -709,10 +713,10 @@ RectTransform:
   m_Father: {fileID: 158381742}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.0000009536743, y: -20.5}
-  m_SizeDelta: {x: 77.1456, y: 41}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -41.04}
+  m_SizeDelta: {x: -1747.662, y: 82.08}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1076430142
 MonoBehaviour:
@@ -843,8 +847,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -10}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchoredPosition: {x: 19.7491, y: -20}
+  m_SizeDelta: {x: 39.4983, y: 39.4983}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1389486245
 MonoBehaviour:
@@ -949,8 +953,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -56.628906, y: -10}
-  m_SizeDelta: {x: 113.2578, y: 20}
+  m_AnchoredPosition: {x: -157.5084, y: -32.621338}
+  m_SizeDelta: {x: 315.0168, y: 65.2427}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2021708383
 MonoBehaviour:
