@@ -46,6 +46,7 @@ public class Gamemanager : MonoBehaviour
 	// Game Data
 	[HideInInspector] public bool isAlive;
 	[HideInInspector] public int cellsMined;
+	[HideInInspector] public int minesNotFlagged;
 	/*[HideInInspector]*/ public bool mobileMode;
 
 	// Scripts
@@ -66,7 +67,11 @@ public class Gamemanager : MonoBehaviour
 	{
 		isAlive = true;
 		uim.resetButton.interactable = true;
+
 		cellsMined = 0;
+		minesNotFlagged = mineAmount;
+
+		uim.SetFlagAmountText(mineAmount);
 
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];

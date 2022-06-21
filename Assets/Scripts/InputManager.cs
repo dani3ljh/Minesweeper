@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
 	[HideInInspector] public float[] yCenters;
 
 	private Gamemanager gm;
+	private UIManager uim;
 
 	private int width;
 	private int height;
@@ -21,6 +22,8 @@ public class InputManager : MonoBehaviour
 	void Start()
 	{
 		gm = gameObject.GetComponent<Gamemanager>();
+		uim = gameObject.GetComponent<UIManager>();
+
 		cellFlagged = gm.cellFlagged;
 		cellUnchecked = gm.cellUnchecked;
 		gm.cameraBackgroundColor = Camera.main.backgroundColor;
@@ -106,12 +109,15 @@ public class InputManager : MonoBehaviour
 			case 0:
 				gm.cellSpriteRenderers[x, y].sprite = cellFlagged;
 				gm.cellStatuses[x, y] = 10;
+				gm.minesNotFlagged--;
 				break;
 			case 10:
 				gm.cellSpriteRenderers[x, y].sprite = cellUnchecked;
 				gm.cellStatuses[x, y] = 0;
+				gm.minesNotFlagged++;
 				break;
 		}
+		uim.SetFlagAmountText(gm.minesNotFlagged);
 	}
 
 	private void MiddleClick(int x, int y)
