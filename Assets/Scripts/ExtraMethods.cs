@@ -1,4 +1,4 @@
-internal static class ExtensionMethods
+internal static class ExtraMethods
 {
 	internal static T[][] ToJaggedArray<T>(this T[,] twoDimensionalArray)
 	{
