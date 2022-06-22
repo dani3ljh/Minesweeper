@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class EndScreen : MonoBehaviour
 {
-    [SerializeField] private Animator anim;
+	[SerializeField] private Animator anim;
 
-    [HideInInspector] public Gamemanager gm;
-    [HideInInspector] public float resetDelay;
+	[HideInInspector] public Gamemanager gm;
+	[HideInInspector] public float resetDelay;
 
-    public void PlayAgain()
-    {
-        anim.SetTrigger("Rise");
+	public void PlayAgain()
+	{
+		anim.SetTrigger("Rise");
 
-        gm.Invoke(nameof(gm.Start), resetDelay);
+		gm.Invoke(nameof(gm.Start), resetDelay);
 
-        Invoke(nameof(DestroySelf), resetDelay);
-    }
+		Invoke(nameof(DestroySelf), resetDelay);
+	}
 
-    private void DestroySelf()
-    {
-        Destroy(gameObject);
-    }
+	private void DestroySelf()
+	{
+		Destroy(gameObject);
+	}
 }

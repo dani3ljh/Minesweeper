@@ -34,9 +34,9 @@ public class InputManager : MonoBehaviour
 		if (!gm.isAlive) return;
 
 		if (Input.GetMouseButtonDown(0))
-        {
+		{
 			startTime = Time.time;
-        }
+		}
 
 		// Left Click
 		if (Input.GetMouseButtonUp(0))
@@ -48,11 +48,11 @@ public class InputManager : MonoBehaviour
 
 			if (x == -1 || y == -1) return;
 
-            if (gm.mobileMode && (Time.time - startTime >= gm.mobileModeFlagTime))
-            {
+			if (gm.mobileMode && (Time.time - startTime >= gm.mobileModeFlagTime))
+			{
 				RightClick(x, y);
 				return;
-            }
+			}
 
 			LeftClick(x, y);
 		}
@@ -90,7 +90,7 @@ public class InputManager : MonoBehaviour
 	}
 
 	private void LeftClick(int x, int y)
-    {
+	{
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:
@@ -103,7 +103,7 @@ public class InputManager : MonoBehaviour
 	}
 
 	private void RightClick(int x, int y)
-    {
+	{
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:

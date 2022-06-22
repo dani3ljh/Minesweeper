@@ -46,12 +46,14 @@ public class Gamemanager : MonoBehaviour
 	// Game Data
 	[HideInInspector] public bool isAlive;
 	[HideInInspector] public int cellsMined;
+	[HideInInspector] public int cellsNotMined;
 	[HideInInspector] public int minesNotFlagged;
 	/*[HideInInspector]*/ public bool mobileMode;
 
 	// Scripts
 	private InputManager im;
 	private UIManager uim;
+	private TimerManager tm;
 
 	// Color
 	[HideInInspector] public Color cameraBackgroundColor;
@@ -60,6 +62,10 @@ public class Gamemanager : MonoBehaviour
 	{
 		im = gameObject.GetComponent<InputManager>();
 		uim = gameObject.GetComponent<UIManager>();
+		tm = gameObject.GetComponent<TimerManager>();
+
+		tm.StopTimer();
+		tm.ResetTimer();
 		mobileMode = false;
 	}
 
@@ -69,9 +75,11 @@ public class Gamemanager : MonoBehaviour
 		uim.resetButton.interactable = true;
 
 		cellsMined = 0;
+		cellsNotMined = (width * height) - mineAmount;
 		minesNotFlagged = mineAmount;
 
 		uim.SetFlagAmountText(mineAmount);
+		uim.SetCellAmountText(cellsNotMined);
 
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];
@@ -123,7 +131,12 @@ public class Gamemanager : MonoBehaviour
 			return;
 		}
 
+		if (cellsMined == 0) tm.StartTimer();
+
 		cellsMined++;
+		cellsNotMined--;
+		uim.SetCellAmountText(cellsNotMined);
+		
 
 		if (cellsMined == width * height - mineAmount) Win();
 
@@ -311,6 +324,9 @@ public class Gamemanager : MonoBehaviour
 		isAlive = false;
 		uim.resetButton.interactable = false;
 
+		tm.StopTimer();
+		tm.ResetTimer();
+
 		EndScreen endScreen = Instantiate(winEndScreen, uiCanvas).GetComponent<EndScreen>();
 
 		endScreen.gm = this;
@@ -321,6 +337,9 @@ public class Gamemanager : MonoBehaviour
 	{
 		isAlive = false;
 		uim.resetButton.interactable = false;
+
+		tm.StopTimer();
+		tm.ResetTimer();
 
 		EndScreen endScreen = Instantiate(loseEndScreen, uiCanvas).GetComponent<EndScreen>();
 

@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
 	[SerializeField] private Toggle mobileModeButton;
 	[SerializeField] private Text flagAmountText;
+	[SerializeField] private Text cellAmountText;
 	public Button resetButton;
 
 	private Gamemanager gm;
@@ -22,7 +23,12 @@ public class UIManager : MonoBehaviour
 	}
 
 	public void SetFlagAmountText(int amount)
-    {
+	{
 		flagAmountText.text = amount.ToString();
-    }
+	}
+
+	public void SetCellAmountText(int amount)
+	{
+		cellAmountText.text = amount.ToString();
+	}
 }
