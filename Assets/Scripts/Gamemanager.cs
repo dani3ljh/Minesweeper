@@ -81,6 +81,8 @@ public class Gamemanager : MonoBehaviour
 		uim.SetFlagAmountText(mineAmount);
 		uim.SetCellAmountText(cellsNotMined);
 
+		tm.ResetTimer();
+
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];
 		cellSpriteRenderers = new SpriteRenderer[width, height];
@@ -325,7 +327,6 @@ public class Gamemanager : MonoBehaviour
 		uim.resetButton.interactable = false;
 
 		tm.StopTimer();
-		tm.ResetTimer();
 
 		EndScreen endScreen = Instantiate(winEndScreen, uiCanvas).GetComponent<EndScreen>();
 
@@ -339,7 +340,6 @@ public class Gamemanager : MonoBehaviour
 		uim.resetButton.interactable = false;
 
 		tm.StopTimer();
-		tm.ResetTimer();
 
 		EndScreen endScreen = Instantiate(loseEndScreen, uiCanvas).GetComponent<EndScreen>();
 
