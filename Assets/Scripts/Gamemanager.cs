@@ -48,7 +48,7 @@ public class Gamemanager : MonoBehaviour
 	[HideInInspector] public int cellsMined;
 	[HideInInspector] public int cellsNotMined;
 	[HideInInspector] public int minesNotFlagged;
-	/*[HideInInspector]*/ public bool mobileMode;
+	[HideInInspector] public bool mobileMode;
 
 	// Scripts
 	private InputManager im;
@@ -129,7 +129,7 @@ public class Gamemanager : MonoBehaviour
 			}
 			
 			cellSpriteRenderers[x, y].sprite = cellTriggeredMine;
-			Lose();
+			EndGame(false);
 			return;
 		}
 
@@ -140,7 +140,7 @@ public class Gamemanager : MonoBehaviour
 		uim.SetCellAmountText(cellsNotMined);
 		
 
-		if (cellsMined == width * height - mineAmount) Win();
+		if (cellsMined == width * height - mineAmount) EndGame(true);
 
 		if (cellNumber != 0)
 		{
@@ -162,46 +162,17 @@ public class Gamemanager : MonoBehaviour
 			{ 0, -1 },
 			{ -1, -1 }
 		};
-		if (x == 0)
-		{
-			indexOffsets[2, 0] = 0;
-			indexOffsets[4, 0] = 0;
-			indexOffsets[7, 0] = 0;
-			indexOffsets[2, 1] = 0;
-			indexOffsets[4, 1] = 0;
-			indexOffsets[7, 1] = 0;
-		}
-		if (x == w - 1)
-		{
-			indexOffsets[0, 0] = 0;
-			indexOffsets[3, 0] = 0;
-			indexOffsets[5, 0] = 0;
-			indexOffsets[0, 1] = 0;
-			indexOffsets[3, 1] = 0;
-			indexOffsets[5, 1] = 0;
-		}
-		if (y == 0)
-		{
-			indexOffsets[5, 0] = 0;
-			indexOffsets[6, 0] = 0;
-			indexOffsets[7, 0] = 0;
-			indexOffsets[5, 1] = 0;
-			indexOffsets[6, 1] = 0;
-			indexOffsets[7, 1] = 0;
-		}
-		if (y == h - 1)
-		{
-			indexOffsets[0, 0] = 0;
-			indexOffsets[1, 0] = 0;
-			indexOffsets[2, 0] = 0;
-			indexOffsets[0, 1] = 0;
-			indexOffsets[1, 1] = 0;
-			indexOffsets[2, 1] = 0;
-		}
-
 		for (int i = 0; i < 8; i++)
 		{
-			MineCell(x + indexOffsets[i, 0], y + indexOffsets[i, 1], w, h);
+			int checkX = x + indexOffsets[i, 0];
+			int checkY = y + indexOffsets[i, 1];
+
+			if (checkX < 0 || checkY < 0 || checkX >= w || checkY >= h)
+			{
+				continue;
+			}
+
+			MineCell(checkX, checkY, w, h);
 		}
 	}
 
@@ -273,47 +244,19 @@ public class Gamemanager : MonoBehaviour
 			{ 0, -1 }, 
 			{ -1, -1 } 
 		};
-		if (x == 0)
-		{
-			indexOffsets[2,0] = 0;
-			indexOffsets[4,0] = 0;
-			indexOffsets[7,0] = 0;
-			indexOffsets[2,1] = 0;
-			indexOffsets[4,1] = 0;
-			indexOffsets[7,1] = 0;
-		}
-		if (x == w - 1)
-		{
-			indexOffsets[0, 0] = 0;
-			indexOffsets[3, 0] = 0;
-			indexOffsets[5, 0] = 0;
-			indexOffsets[0, 1] = 0;
-			indexOffsets[3, 1] = 0;
-			indexOffsets[5, 1] = 0;
-		}
-		if (y == 0)
-		{
-			indexOffsets[5, 0] = 0;
-			indexOffsets[6, 0] = 0;
-			indexOffsets[7, 0] = 0;
-			indexOffsets[5, 1] = 0;
-			indexOffsets[6, 1] = 0;
-			indexOffsets[7, 1] = 0;
-		}
-		if (y == h - 1)
-		{
-			indexOffsets[0, 0] = 0;
-			indexOffsets[1, 0] = 0;
-			indexOffsets[2, 0] = 0;
-			indexOffsets[0, 1] = 0;
-			indexOffsets[1, 1] = 0;
-			indexOffsets[2, 1] = 0;
-		}
 		for (int i = 0; i < 8; i++)
 		{
+			int checkX = x + indexOffsets[i, 0];
+			int checkY = y + indexOffsets[i, 1];
+
+			if(checkX < 0 || checkY < 0 || checkX >= w || checkY >= h)
+			{
+				continue;
+			}
+
 			if (twoDMineArr[
-				x + indexOffsets[i, 0],
-				y + indexOffsets[i, 1]
+				checkX,
+				checkY
 			]){
 				total++;
 			}
@@ -321,29 +264,16 @@ public class Gamemanager : MonoBehaviour
 		return total;
 	}
 
-	public void Win()
+	public void EndGame(bool win)
 	{
 		isAlive = false;
 		uim.resetButton.interactable = false;
 
 		tm.StopTimer();
 
-		EndScreen endScreen = Instantiate(winEndScreen, uiCanvas).GetComponent<EndScreen>();
+		EndScreen endScreen = Instantiate(win ? winEndScreen : loseEndScreen, uiCanvas).GetComponent<EndScreen>();
 
 		endScreen.gm = this;
-		endScreen.resetDelay = winResetDelay;
-	}
-
-	private void Lose()
-	{
-		isAlive = false;
-		uim.resetButton.interactable = false;
-
-		tm.StopTimer();
-
-		EndScreen endScreen = Instantiate(loseEndScreen, uiCanvas).GetComponent<EndScreen>();
-
-		endScreen.gm = this;
-		endScreen.resetDelay = loseResetDelay;
+		endScreen.resetDelay = win ? winResetDelay : loseResetDelay;
 	}
 }
