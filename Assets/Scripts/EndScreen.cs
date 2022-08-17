@@ -13,7 +13,7 @@ public class EndScreen : MonoBehaviour
 	{
 		anim.SetTrigger("Rise");
 
-		gm.Invoke(nameof(gm.Start), resetDelay);
+		gm.Invoke(nameof(gm.SetupGame), resetDelay);
 
 		Invoke(nameof(DestroySelf), resetDelay);
 	}

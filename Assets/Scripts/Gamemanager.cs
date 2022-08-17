@@ -20,6 +20,7 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private Transform uiCanvas;
 	[SerializeField] private GameObject loseEndScreen;
 	[SerializeField] private GameObject winEndScreen;
+	[SerializeField] private GameObject startScreen;
 
 	[Header("Cell Textures")]
 	public Sprite cellBlank;
@@ -49,6 +50,7 @@ public class Gamemanager : MonoBehaviour
 	[HideInInspector] public int cellsNotMined;
 	[HideInInspector] public int minesNotFlagged;
 	[HideInInspector] public bool mobileMode;
+	[HideInInspector] public string gameMode;
 
 	// Scripts
 	private InputManager im;
@@ -58,7 +60,7 @@ public class Gamemanager : MonoBehaviour
 	// Color
 	[HideInInspector] public Color cameraBackgroundColor;
 
-	private void Awake()
+	private void Start()
 	{
 		im = gameObject.GetComponent<InputManager>();
 		uim = gameObject.GetComponent<UIManager>();
@@ -69,7 +71,14 @@ public class Gamemanager : MonoBehaviour
 		mobileMode = false;
 	}
 
-	public void Start()
+	public void StartGame(string mode)
+	{
+		gameMode = mode;
+		startScreen.SetActive(false);
+		Invoke(nameof(SetupGame), 0.5f);
+	}
+
+	public void SetupGame()
 	{
 		isAlive = true;
 		uim.resetButton.interactable = true;
@@ -87,7 +96,7 @@ public class Gamemanager : MonoBehaviour
 		cellStatuses = new int[width, height];
 		cellSpriteRenderers = new SpriteRenderer[width, height];
 
-		mines = GenerateRandomMines(mineAmount, width, height);
+		mines = GenerateRandomMines(mineAmount);
 
 		im.SetVariables(width, height, mineAmount, mines);
 
@@ -98,7 +107,7 @@ public class Gamemanager : MonoBehaviour
 		{
 			for(int y = 0; y < height; y++)
 			{
-				GameObject cell = PlaceCell(x, y, width, height);
+				GameObject cell = PlaceCell(x, y);
 				cells[x, y] = cell;
 				cellStatuses[x, y] = 0;
 				im.xCenters[x] = cell.transform.position.x;
@@ -107,7 +116,7 @@ public class Gamemanager : MonoBehaviour
 		}
 	}
 
-	public void MineCell(int x, int y, int w, int h)
+	public void MineCell(int x, int y)
 	{
 		if (cellStatuses[x, y] != 0) return;
 
@@ -124,7 +133,7 @@ public class Gamemanager : MonoBehaviour
 				int[][] freeIndexes = GetFreeIndexes(mines.ToJaggedArray());
 				int index = Random.Range(0, freeIndexes.Length);
 				mines[freeIndexes[index][0], freeIndexes[index][1]] = true;
-				MineCell(x, y, w, h);
+				MineCell(x, y);
 				return;
 			}
 			
@@ -167,19 +176,19 @@ public class Gamemanager : MonoBehaviour
 			int checkX = x + indexOffsets[i, 0];
 			int checkY = y + indexOffsets[i, 1];
 
-			if (checkX < 0 || checkY < 0 || checkX >= w || checkY >= h)
+			if (checkX < 0 || checkY < 0 || checkX >= width || checkY >= height)
 			{
 				continue;
 			}
 
-			MineCell(checkX, checkY, w, h);
+			MineCell(checkX, checkY);
 		}
 	}
 
-	private GameObject PlaceCell(int x, int y, int w, int h)
+	private GameObject PlaceCell(int x, int y)
 	{
-		float scale = 10f / h;
-		float transformedX = (w * scale * -0.5f) + scale / 2 + (x * scale);
+		float scale = 10f / height;
+		float transformedX = (width * scale * -0.5f) + scale / 2 + (x * scale);
 		float transformedY = 5 - (scale / 2) - (y * scale);
 		GameObject cell = Instantiate(cellPrefab, new Vector3(transformedX, transformedY, 0), new Quaternion(0,0,0,0));
 		cell.transform.SetParent(cellFolder);
@@ -190,9 +199,9 @@ public class Gamemanager : MonoBehaviour
 		return cell;
 	}
 	
-	private bool[,] GenerateRandomMines(int amountOfMines, int w, int h)
+	private bool[,] GenerateRandomMines(int amountOfMines)
 	{
-		bool[,] twoDMineArr = new bool[w, h];
+		bool[,] twoDMineArr = new bool[width, height];
 		for(int i = 0; i < amountOfMines; i++)
 		{
 			int[][] freeIndexes = GetFreeIndexes(twoDMineArr.ToJaggedArray());

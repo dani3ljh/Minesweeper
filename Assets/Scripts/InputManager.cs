@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
 	private UIManager uim;
 
 	private int width;
-	private int height;
+	private int height; 
 	private int mineAmount;
 	private bool[,] mines;
 	private Sprite cellFlagged;
@@ -85,7 +85,7 @@ public class InputManager : MonoBehaviour
 
 		// Reset Button
 		if (Input.GetButtonDown("Reset")){
-			gm.Start();
+			gm.SetupGame();
 		}
 	}
 
@@ -94,7 +94,7 @@ public class InputManager : MonoBehaviour
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:
-				gm.MineCell(x, y, width, height);
+				gm.MineCell(x, y);
 				break;
 			case int n when (n >= 1 && n <= 8):
 				MiddleClick(x, y);
@@ -125,56 +125,25 @@ public class InputManager : MonoBehaviour
 		int totalSurroundingFlags = 0;
 
 		int[,] indexOffsets = new int[8, 2] {
-						{ 1, 1 },
-						{ 0, 1 },
-						{ -1, 1 },
-						{ 1, 0 },
-						{ -1, 0 },
-						{ 1, -1 },
-						{ 0, -1 },
-						{ -1, -1 }
-					};
-		if (x == 0)
-		{
-			indexOffsets[2, 0] = 0;
-			indexOffsets[4, 0] = 0;
-			indexOffsets[7, 0] = 0;
-			indexOffsets[2, 1] = 0;
-			indexOffsets[4, 1] = 0;
-			indexOffsets[7, 1] = 0;
-		}
-		if (x == width - 1)
-		{
-			indexOffsets[0, 0] = 0;
-			indexOffsets[3, 0] = 0;
-			indexOffsets[5, 0] = 0;
-			indexOffsets[0, 1] = 0;
-			indexOffsets[3, 1] = 0;
-			indexOffsets[5, 1] = 0;
-		}
-		if (y == 0)
-		{
-			indexOffsets[5, 0] = 0;
-			indexOffsets[6, 0] = 0;
-			indexOffsets[7, 0] = 0;
-			indexOffsets[5, 1] = 0;
-			indexOffsets[6, 1] = 0;
-			indexOffsets[7, 1] = 0;
-		}
-		if (y == height - 1)
-		{
-			indexOffsets[0, 0] = 0;
-			indexOffsets[1, 0] = 0;
-			indexOffsets[2, 0] = 0;
-			indexOffsets[0, 1] = 0;
-			indexOffsets[1, 1] = 0;
-			indexOffsets[2, 1] = 0;
-		}
+			{ 1, 1 },
+			{ 0, 1 },
+			{ -1, 1 },
+			{ 1, 0 },
+			{ -1, 0 },
+			{ 1, -1 },
+			{ 0, -1 },
+			{ -1, -1 }
+		};
 
 		for (int i = 0; i < 8; i++)
 		{
 			int newX = x + indexOffsets[i, 0];
 			int newY = y + indexOffsets[i, 1];
+
+			if (newX < 0 || newY < 0 || newX >= width || newY >= height)
+			{
+				continue;
+			}
 
 			if (gm.cellStatuses[newX, newY] == 10) totalSurroundingFlags++;
 		}
@@ -186,7 +155,12 @@ public class InputManager : MonoBehaviour
 				int newX = x + indexOffsets[i, 0];
 				int newY = y + indexOffsets[i, 1];
 
-				if (gm.cellStatuses[newX, newY] == 0) gm.MineCell(newX, newY, width, height);
+				if (newX < 0 || newY < 0 || newX >= width || newY >= height)
+				{
+					continue;
+				}
+
+				if (gm.cellStatuses[newX, newY] == 0) gm.MineCell(newX, newY);
 			}
 		}
 	}
