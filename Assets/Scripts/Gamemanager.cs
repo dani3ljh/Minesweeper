@@ -288,6 +288,22 @@ public class Gamemanager : MonoBehaviour
 				total++;
 			}
 		}
+		if (gameMode == "oneOff")
+		{
+			if(total == 0)
+			{
+				return 1;
+			}
+			if(total == 1)
+			{
+				return 2;
+			}
+			if(total == 8)
+			{
+				return 7;
+			}
+			return total + (Random.value > 0.5f ? -1 : 1);
+		}
 		return total;
 	}
 
