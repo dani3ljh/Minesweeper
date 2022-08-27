@@ -38,54 +38,36 @@ public class InputManager : MonoBehaviour
 			startTime = Time.time;
 		}
 
+		// Reset Button
+		if (Input.GetButtonDown("Reset")){
+			gm.SetupGame();
+		}
+
+		if (!(Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2))) return;
+
+		Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
+		int x = indexes[0];
+		int y = indexes[1];
+
+		if (x == -1 || y == -1) return;
+
 		// Left Click
 		if (Input.GetMouseButtonUp(0))
 		{
-			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
-			int x = indexes[0];
-			int y = indexes[1];
-
-			if (x == -1 || y == -1) return;
-
-			if (gm.mobileMode && (Time.time - startTime >= gm.mobileModeFlagTime))
-			{
-				RightClick(x, y);
-				return;
-			}
-
 			LeftClick(x, y);
 		}
 
 		// Right Click
 		if (Input.GetMouseButtonUp(1))
 		{
-			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
-			int x = indexes[0];
-			int y = indexes[1];
-
-			if (x == -1 || y == -1) return;
-
 			RightClick(x, y);
 		}
 
 		// Middle Click
 		if (Input.GetMouseButtonUp(2))
 		{
-			Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
-			int x = indexes[0];
-			int y = indexes[1];
-
-			if (x == -1 || y == -1) return;
-			
 			MiddleClick(x, y);
-		}
-
-		// Reset Button
-		if (Input.GetButtonDown("Reset")){
-			gm.SetupGame();
 		}
 	}
 
