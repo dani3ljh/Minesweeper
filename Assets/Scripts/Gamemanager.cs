@@ -71,6 +71,12 @@ public class Gamemanager : MonoBehaviour
 		mobileMode = false;
 	}
 
+	public void ChooseAnotherMode()
+	{
+		startScreen.SetActive(true);
+		gameMode = null;
+	}
+
 	public void StartGame(string mode)
 	{
 		gameMode = mode;
@@ -91,6 +97,18 @@ public class Gamemanager : MonoBehaviour
 		uim.SetCellAmountText(cellsNotMined);
 
 		tm.ResetTimer();
+
+		// if there are still cells delete them
+		if (cells != null)
+		{
+			for (int x = 0; x < cells.GetLength(0); x++)
+			{
+				for (int y = 0; y < cells.GetLength(1); y++)
+				{
+					Destroy(cells[x, y]);
+				}
+			}
+		}
 
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];

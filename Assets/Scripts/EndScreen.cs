@@ -9,6 +9,12 @@ public class EndScreen : MonoBehaviour
 	[HideInInspector] public Gamemanager gm;
 	[HideInInspector] public float resetDelay;
 
+	public void ChooseAnotherMode()
+	{
+		gm.ChooseAnotherMode();
+		Destroy(gameObject);
+	}
+
 	public void PlayAgain()
 	{
 		anim.SetTrigger("Rise");
