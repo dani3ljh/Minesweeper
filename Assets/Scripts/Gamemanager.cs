@@ -20,7 +20,8 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private Transform uiCanvas;
 	[SerializeField] private GameObject loseEndScreen;
 	[SerializeField] private GameObject winEndScreen;
-	[SerializeField] private GameObject startScreen;
+	[SerializeField] private Animator startScreenAnim;
+	[SerializeField] private GameObject textPopupPrefab;
 
 	[Header("Cell Textures")]
 	public Sprite cellBlank;
@@ -43,7 +44,7 @@ public class Gamemanager : MonoBehaviour
 	 */
 	[HideInInspector] public int[,] cellStatuses;
 	private bool[,] mines;
-	
+
 	// Game Data
 	[HideInInspector] public bool isAlive;
 	[HideInInspector] public int cellsMined;
@@ -60,6 +61,31 @@ public class Gamemanager : MonoBehaviour
 	// Color
 	[HideInInspector] public Color cameraBackgroundColor;
 
+	private readonly Dictionary<string, string> textPopups = new Dictionary<string, string>()
+	{
+		{"normal rules", 
+			"In minesweeper each revealed cell has a number. \n" +
+			"This number refers to the amount of mines next to it including diagonals. \n" +
+			"So an 8 for example would have every cell around it be a mine. \n" +
+			"Whilst a 1 only has 1 mine around it. \n" +
+			"You can flag cells to indicate that it is a mine."
+		},
+		{"oneOff rules", 
+			"In Lying Mode Cells will be one off of their actual value. \n" +
+			"For example if a cell said 2 that either means there are 3 mines around it or 1. \n" +
+			"Logically 0s will always be 1, 1s will always be 2 and 8s will always be 7. \n" +
+			"Also you can't middle click in this mode."
+		},
+		{"controls", 
+			"There are 3 input types: A left click, a right click, and A middle click. \n" +
+			"Press r to reset the game on the current mode. \n" +
+			"To left click press the left mouse button and release on the cell you want to mine. \n" +
+			"To right click press the right mouse button and release on the cell you want to flag. \n" +
+			"To middle click press either the scroll button or left click button on a cleared cell. \n" +
+			"Middle clicking on a cell with equal to or more flags around it than its number will clear all un checked cells around it."
+		}
+	};
+
 	private void Start()
 	{
 		im = gameObject.GetComponent<InputManager>();
@@ -73,14 +99,16 @@ public class Gamemanager : MonoBehaviour
 
 	public void ChooseAnotherMode()
 	{
-		startScreen.SetActive(true);
+		isAlive = false;
+		tm.StopTimer();
+		startScreenAnim.SetTrigger("Fall");
 		gameMode = null;
 	}
 
 	public void StartGame(string mode)
 	{
 		gameMode = mode;
-		startScreen.SetActive(false);
+		startScreenAnim.SetTrigger("Rise");
 		Invoke(nameof(SetupGame), 0.5f);
 	}
 
@@ -96,7 +124,7 @@ public class Gamemanager : MonoBehaviour
 		uim.SetFlagAmountText(mineAmount);
 		uim.SetCellAmountText(cellsNotMined);
 
-		tm.ResetTimer();
+		tm.StopTimer();
 
 		// if there are still cells delete them
 		if (cells != null)
@@ -312,11 +340,23 @@ public class Gamemanager : MonoBehaviour
 		isAlive = false;
 		uim.resetButton.interactable = false;
 
-		tm.StopTimer();
+		tm.StopTimer(false);
 
 		EndScreen endScreen = Instantiate(win ? winEndScreen : loseEndScreen, uiCanvas).GetComponent<EndScreen>();
 
 		endScreen.gm = this;
 		endScreen.resetDelay = win ? winResetDelay : loseResetDelay;
+	}
+
+	public void CreateTextPopup(string textKey)
+	{
+		if (!textPopups.ContainsKey(textKey))
+		{
+			Debug.Log($"Textpopups doesnt contain key {textKey}");
+			return;
+		}
+		
+		TextPopup textPopupScript = Instantiate(textPopupPrefab, uiCanvas).GetComponent<TextPopup>();
+		textPopupScript.SetText(textPopups[textKey]);
 	}
 }

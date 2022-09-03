@@ -25,9 +25,10 @@ public class TimerManager : MonoBehaviour
 		timerText.text = SecondsToReadableFormat(time);
 	}
 
-	public void StopTimer()
+	public void StopTimer(bool reset = true)
 	{
 		isRunning = false;
+		if (reset) ResetTimer();
 	}
 
 	public void StartTimer()
