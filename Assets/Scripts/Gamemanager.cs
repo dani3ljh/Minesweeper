@@ -10,8 +10,11 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private int width;
 	[SerializeField] private int height;
 	[SerializeField] private int mineAmount;
-	public float loseResetDelay;
-	public float winResetDelay;
+	[SerializeField] private float loseResetDelay;
+	[SerializeField] private float winResetDelay;
+	[SerializeField] private float loseInstantiateDelay;
+	[SerializeField] private float winInstantiateDelay;
+
 	public float mobileModeFlagTime = 1f;
 
 	[Header("Objects")]
@@ -342,10 +345,28 @@ public class Gamemanager : MonoBehaviour
 
 		tm.StopTimer(false);
 
-		EndScreen endScreen = Instantiate(win ? winEndScreen : loseEndScreen, uiCanvas).GetComponent<EndScreen>();
+		if (win)
+		{
+			Invoke(nameof(InstantiateWinScreen), winInstantiateDelay);
+		} else 
+		{
+			Invoke(nameof(InstantiateLoseScreen), loseInstantiateDelay);
+		}
+	}
+
+	private void InstantiateLoseScreen()
+	{
+		EndScreen endScreen = Instantiate(loseEndScreen, uiCanvas).GetComponent<EndScreen>();
 
 		endScreen.gm = this;
-		endScreen.resetDelay = win ? winResetDelay : loseResetDelay;
+		endScreen.resetDelay = loseResetDelay;
+	}
+	private void InstantiateWinScreen()
+	{
+		EndScreen endScreen = Instantiate(winEndScreen, uiCanvas).GetComponent<EndScreen>();
+
+		endScreen.gm = this;
+		endScreen.resetDelay = winResetDelay;
 	}
 
 	public void CreateTextPopup(string textKey)
