@@ -104,6 +104,7 @@ public class InputManager : MonoBehaviour
 
 	private void MiddleClick(int x, int y)
 	{
+		if (gm.gameMode == "oneOff") return;
 		int totalSurroundingFlags = 0;
 
 		int[,] indexOffsets = new int[8, 2] {
