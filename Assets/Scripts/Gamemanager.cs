@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class Gamemanager : MonoBehaviour
 {
 	[Header("Board Settings")]
-	[SerializeField] private int width;
-	[SerializeField] private int height;
-	[SerializeField] private int mineAmount;
+	private int width;
+	private int height;
+	private int mineAmount;
 	[SerializeField] private float loseInstantiateDelay;
 	[SerializeField] private float winInstantiateDelay;
 
@@ -19,6 +19,12 @@ public class Gamemanager : MonoBehaviour
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
 	[SerializeField] private Animator startScreenAnim;
+	[SerializeField] private Text heightInputText;
+	[SerializeField] private Text widthInputText;
+	[SerializeField] private Text mineAmountInputText;
+	[SerializeField] private Text heightResultsText;
+	[SerializeField] private Text widthResultsText;
+	[SerializeField] private Text mineAmountResultsText;
 
 	[Header("Cell Textures")]
 	public Sprite cellBlank;
@@ -88,7 +94,15 @@ public class Gamemanager : MonoBehaviour
 	{
 		isAlive = true;
 		uim.resetButton.interactable = true;
-
+		
+		if(width==null || width==0) width = 16;
+		if(height==null || height==0) height = 13;
+		if(mineAmount==null || mineAmount==0) mineAmount = (int)(width*height*0.19f);
+		
+		heightResultsText.text = "Height: " + height.ToString();
+		widthResultsText.text = "Width: " + width.ToString();
+		mineAmountResultsText.text = "Mines: " + mineAmount.ToString();
+		
 		cellsMined = 0;
 		cellsNotMined = (width * height) - mineAmount;
 		minesNotFlagged = mineAmount;
@@ -290,13 +304,9 @@ public class Gamemanager : MonoBehaviour
 		}
 		if (gameMode == "oneOff")
 		{
-			if(total == 0)
+			if(total <= 1)
 			{
-				return 1;
-			}
-			if(total == 1)
-			{
-				return 2;
+				return total+1;
 			}
 			if(total == 8)
 			{
@@ -322,5 +332,20 @@ public class Gamemanager : MonoBehaviour
 			? winInstantiateDelay 
 			: loseInstantiateDelay
 		);
+	}
+	
+	public void UpdateHeight(){
+		// int.Parse in theory should be safe because of the input field is set to only allow numbers
+		height = int.Parse(heightInputText.text);
+	}
+	
+	public void UpdateWidth(){
+		// int.Parse in theory should be safe because of the input field is set to only allow numbers
+		width = int.Parse(widthInputText.text);
+	}
+	
+	public void UpdateMineAmount(){
+		// int.Parse in theory should be safe because of the input field is set to only allow numbers
+		mineAmount = int.Parse(mineAmountInputText.text);
 	}
 }
