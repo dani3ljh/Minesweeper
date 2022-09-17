@@ -576,18 +576,12 @@ MonoBehaviour:
   width: 16
   height: 13
   mineAmount: 40
-  loseResetDelay: 1
-  winResetDelay: 2
   loseInstantiateDelay: 1
   winInstantiateDelay: 1
   mobileModeFlagTime: 0.3
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
-  uiCanvas: {fileID: 158381742}
-  loseEndScreen: {fileID: 6132166947446652994, guid: bdec05bab322d3a44a83389e57832cc7, type: 3}
-  winEndScreen: {fileID: 6132166947446652994, guid: d18e42f1edf27ad4ab89cee4f842cea0, type: 3}
   startScreenAnim: {fileID: 1582763438}
-  textPopupPrefab: {fileID: 332115273058406743, guid: 76da91ef1fe85254291accba38ad1c44, type: 3}
   cellBlank: {fileID: -1245595124908343168, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellUnchecked: {fileID: 7868535118147067289, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellNumbers:
@@ -693,10 +687,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1955404459c8f44f9df3c035509d703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mobileModeButton: {fileID: 0}
+  resetButton: {fileID: 1076430142}
   flagAmountText: {fileID: 635212402}
   cellAmountText: {fileID: 1878106125}
-  resetButton: {fileID: 1076430142}
+  loseEndScreen: {fileID: 6132166947446652994, guid: bdec05bab322d3a44a83389e57832cc7, type: 3}
+  winEndScreen: {fileID: 6132166947446652994, guid: d18e42f1edf27ad4ab89cee4f842cea0, type: 3}
+  textPopupPrefab: {fileID: 332115273058406743, guid: 76da91ef1fe85254291accba38ad1c44, type: 3}
+  loseResetDelay: 1
+  winResetDelay: 3
+  uiCanvas: {fileID: 158381742}
 --- !u!114 &519420035
 MonoBehaviour:
   m_ObjectHideFlags: 0
