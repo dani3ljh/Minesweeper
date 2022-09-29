@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private Text cellAmountText;
 	[SerializeField] private GameObject loseEndScreen;
 	[SerializeField] private GameObject winEndScreen;
+	[SerializeField] private Animator startScreenAnim;
 	[SerializeField] private GameObject textPopupPrefab;
 	[SerializeField] private float loseResetDelay;
 	[SerializeField] private float winResetDelay;
@@ -83,5 +84,15 @@ public class UIManager : MonoBehaviour
 		
 		TextPopup textPopupScript = Instantiate(textPopupPrefab, uiCanvas).GetComponent<TextPopup>();
 		textPopupScript.SetText(textPopups[textKey]);
+	}
+
+	public void StartScreenRise()
+	{
+		startScreenAnim.SetTrigger("Rise");
+	}
+
+	public void StartScreenFall()
+	{
+		startScreenAnim.SetTrigger("Fall");
 	}
 }

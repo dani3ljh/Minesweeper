@@ -487,7 +487,7 @@ RectTransform:
   m_GameObject: {fileID: 260439448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12.604719, y: 8.4749, z: 8.4749}
+  m_LocalScale: {x: 12.604719, y: 8.792709, z: 8.4749}
   m_Children: []
   m_Father: {fileID: 1582763437}
   m_RootOrder: 0
@@ -893,7 +893,6 @@ MonoBehaviour:
   mobileModeFlagTime: 0.3
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
-  startScreenAnim: {fileID: 1582763438}
   heightInputText: {fileID: 520613950}
   widthInputText: {fileID: 788301752}
   mineAmountInputText: {fileID: 3115517}
@@ -1010,6 +1009,7 @@ MonoBehaviour:
   cellAmountText: {fileID: 1878106125}
   loseEndScreen: {fileID: 6132166947446652994, guid: bdec05bab322d3a44a83389e57832cc7, type: 3}
   winEndScreen: {fileID: 6132166947446652994, guid: d18e42f1edf27ad4ab89cee4f842cea0, type: 3}
+  startScreenAnim: {fileID: 1582763438}
   textPopupPrefab: {fileID: 332115273058406743, guid: 76da91ef1fe85254291accba38ad1c44, type: 3}
   loseResetDelay: 1
   winResetDelay: 3
@@ -2346,8 +2346,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_TargetAssemblyTypeName: Gamemanager, Assembly-CSharp
+      - m_Target: {fileID: 519420034}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: CreateTextPopup
         m_Mode: 5
         m_Arguments:
@@ -2479,8 +2479,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_TargetAssemblyTypeName: Gamemanager, Assembly-CSharp
+      - m_Target: {fileID: 519420034}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: CreateTextPopup
         m_Mode: 5
         m_Arguments:
@@ -4081,8 +4081,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_TargetAssemblyTypeName: Gamemanager, Assembly-CSharp
+      - m_Target: {fileID: 519420034}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: CreateTextPopup
         m_Mode: 5
         m_Arguments:

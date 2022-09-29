@@ -18,7 +18,6 @@ public class Gamemanager : MonoBehaviour
 	[Header("Objects")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
-	[SerializeField] private Animator startScreenAnim;
 	[SerializeField] private Text heightInputText;
 	[SerializeField] private Text widthInputText;
 	[SerializeField] private Text mineAmountInputText;
@@ -79,14 +78,17 @@ public class Gamemanager : MonoBehaviour
 	{
 		isAlive = false;
 		tm.StopTimer();
-		startScreenAnim.SetTrigger("Fall");
+		uim.StartScreenFall();
 		gameMode = null;
+
+		// if there are cells delete them
+		if (cells != null) DeleteCells();
 	}
 
 	public void StartGame(string mode)
 	{
 		gameMode = mode;
-		startScreenAnim.SetTrigger("Rise");
+		uim.StartScreenRise();
 		Invoke(nameof(SetupGame), 0.5f);
 	}
 
@@ -95,9 +97,9 @@ public class Gamemanager : MonoBehaviour
 		isAlive = true;
 		uim.resetButton.interactable = true;
 		
-		if(width==null || width==0) width = 16;
-		if(height==null || height==0) height = 13;
-		if(mineAmount==null || mineAmount==0) mineAmount = (int)(width*height*0.19f);
+		if(width==0) width = 16;
+		if(height==0) height = 13;
+		if(mineAmount==0) mineAmount = (int)(width*height*0.19f);
 		
 		heightResultsText.text = "Height: " + height.ToString();
 		widthResultsText.text = "Width: " + width.ToString();
@@ -113,16 +115,7 @@ public class Gamemanager : MonoBehaviour
 		tm.StopTimer();
 
 		// if there are still cells delete them
-		if (cells != null)
-		{
-			for (int x = 0; x < cells.GetLength(0); x++)
-			{
-				for (int y = 0; y < cells.GetLength(1); y++)
-				{
-					Destroy(cells[x, y]);
-				}
-			}
-		}
+		if (cells != null) DeleteCells();
 
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];
@@ -332,6 +325,17 @@ public class Gamemanager : MonoBehaviour
 			? winInstantiateDelay 
 			: loseInstantiateDelay
 		);
+	}
+
+	public void DeleteCells()
+	{
+		for (int x = 0; x < cells.GetLength(0); x++)
+		{
+			for (int y = 0; y < cells.GetLength(1); y++)
+			{
+				Destroy(cells[x, y]);
+			}
+		}
 	}
 	
 	public void UpdateHeight(){
