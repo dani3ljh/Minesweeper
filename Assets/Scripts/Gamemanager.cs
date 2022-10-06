@@ -212,10 +212,12 @@ public class Gamemanager : MonoBehaviour
 
 	private GameObject PlaceCell(int x, int y)
 	{
+		// scale, transformedX, and transformedY are all variables found from algebra so dont change
 		float scale = 10f / height;
 		float transformedX = (width * scale * -0.5f) + scale / 2 + (x * scale);
 		float transformedY = 5 - (scale / 2) - (y * scale);
 		GameObject cell = Instantiate(cellPrefab, new Vector3(transformedX, transformedY, 0), new Quaternion(0,0,0,0));
+
 		cell.transform.SetParent(cellFolder);
 		cell.transform.localScale = new Vector3(scale, scale, scale) * 3f;
 		cellSpriteRenderers[x, y] = cell.GetComponent<SpriteRenderer>();

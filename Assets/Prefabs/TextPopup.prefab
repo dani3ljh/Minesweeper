@@ -213,7 +213,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 395950ae4ebf2a74c86e9c6eda6522c9, type: 3}
     m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
@@ -225,16 +225,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'This is the defualt text if you are seeing this the game isnt behaving
-    as expected enjoy some Lorem ipsum: Lorem ipsum dolor sit amet, consectetur adipiscing
-    elit. Nullam in neque tempor lorem posuere condimentum. Nunc metus sapien, dictum
-    at facilisis ac, gravida eu metus. Nunc sollicitudin suscipit nisl, ac ullamcorper
-    orci congue at. In in ipsum a tortor posuere commodo. Suspendisse nec lobortis
-    eros. Sed iaculis mollis leo sagittis finibus. Integer porta, massa vel tincidunt
-    lobortis, nisl nulla venenatis diam, quis elementum diam magna eu erat. Praesent
-    quis feugiat felis. Curabitur at consequat libero. Aliquam hendrerit, urna in
-    viverra gravida, risus erat semper risus, id faucibus nibh felis a urna. Cras
-    ut neque et est pretium venenatis. Nunc vulputate neque vel pharetra semper.'
+  m_Text: This is the defualt text if you are seeing this the game isnt behaving
+    as expected  :(
 --- !u!1 &734189888032679552
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +293,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 395950ae4ebf2a74c86e9c6eda6522c9, type: 3}
     m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
