@@ -99,7 +99,7 @@ public class Gamemanager : MonoBehaviour
 		
 		if(width==0) width = 16;
 		if(height==0) height = 13;
-		if(mineAmount==0) mineAmount = (int)(width*height*0.19f);
+		if(mineAmount==0) mineAmount = (int)(width*height*0.193f);
 		
 		heightResultsText.text = "Height: " + height.ToString();
 		widthResultsText.text = "Width: " + width.ToString();
