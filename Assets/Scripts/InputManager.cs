@@ -8,20 +8,16 @@ public class InputManager : MonoBehaviour
 	[HideInInspector] public float[] xCenters;
 	[HideInInspector] public float[] yCenters;
 
-	private Gamemanager gm;
+	private GameManager gm;
 	private UIManager uim;
 
-	private int width;
-	private int height; 
-	private int mineAmount;
-	private bool[,] mines;
 	private Sprite cellFlagged;
 	private Sprite cellUnchecked;
 	private float startTime;
 
 	void Start()
 	{
-		gm = gameObject.GetComponent<Gamemanager>();
+		gm = gameObject.GetComponent<GameManager>();
 		uim = gameObject.GetComponent<UIManager>();
 
 		cellFlagged = gm.cellFlagged;
@@ -44,9 +40,11 @@ public class InputManager : MonoBehaviour
 		}
 
 		if (!(Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2))) return;
-
+		
+		int width = gm.width;
+		int height = gm.height;
 		Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y);
+		int[] indexes = GetIndexesFromPoint(worldPosition.x, worldPosition.y, width, height);
 		int x = indexes[0];
 		int y = indexes[1];
 
@@ -55,7 +53,7 @@ public class InputManager : MonoBehaviour
 		// Left Click
 		if (Input.GetMouseButtonUp(0))
 		{
-			LeftClick(x, y);
+			LeftClick(x, y, width, height);
 		}
 
 		// Right Click
@@ -67,19 +65,19 @@ public class InputManager : MonoBehaviour
 		// Middle Click
 		if (Input.GetMouseButtonUp(2))
 		{
-			MiddleClick(x, y);
+			MiddleClick(x, y, width, height);
 		}
 	}
 
-	private void LeftClick(int x, int y)
+	private void LeftClick(int x, int y, int width, int height)
 	{
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:
-				gm.MineCell(x, y);
+				CellLogic.MineCell(x, y, width, height);
 				break;
 			case int n when (n >= 1 && n <= 8):
-				MiddleClick(x, y);
+				MiddleClick(x, y, width, height);
 				break;
 		}
 	}
@@ -102,7 +100,7 @@ public class InputManager : MonoBehaviour
 		uim.SetFlagAmountText(gm.minesNotFlagged);
 	}
 
-	private void MiddleClick(int x, int y)
+	private void MiddleClick(int x, int y, int width, int height)
 	{
 		if (gm.gameMode == "oneOff") return;
 		int totalSurroundingFlags = 0;
@@ -143,12 +141,12 @@ public class InputManager : MonoBehaviour
 					continue;
 				}
 
-				if (gm.cellStatuses[newX, newY] == 0) gm.MineCell(newX, newY);
+				if (gm.cellStatuses[newX, newY] == 0) CellLogic.MineCell(newX, newY, gm.width, gm.height);
 			}
 		}
 	}
 
-	private int[] GetIndexesFromPoint(float x, float y)
+	private int[] GetIndexesFromPoint(float x, float y, int width, int height)
 	{
 		int[] indexes = new int[2];
 		float scale = 10f / height;
@@ -175,13 +173,5 @@ public class InputManager : MonoBehaviour
 		indexes[0] = xIndex;
 		indexes[1] = yIndex;
 		return indexes;
-	}
-
-	public void SetVariables(int w, int h, int mA, bool[,] m)
-	{
-		width = w;
-		height = h;
-		mineAmount = mA;
-		mines = m;
 	}
 }

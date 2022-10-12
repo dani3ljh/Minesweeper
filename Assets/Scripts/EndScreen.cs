@@ -6,7 +6,7 @@ public class EndScreen : MonoBehaviour
 {
 	[SerializeField] private Animator anim;
 
-	[HideInInspector] public Gamemanager gm;
+	[HideInInspector] public GameManager gm;
 	[HideInInspector] public float resetDelay;
 
 	public void ChooseAnotherMode()

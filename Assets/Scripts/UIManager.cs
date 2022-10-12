@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private float winResetDelay;
 	[SerializeField] private Transform uiCanvas;
 
-	private Gamemanager gm;
+	private GameManager gm;
 
 	private readonly Dictionary<string, string> textPopups = new Dictionary<string, string>()
 	{
@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
 
 	private void Start()
 	{
-		gm = gameObject.GetComponent<Gamemanager>();
+		gm = gameObject.GetComponent<GameManager>();
 	}
 
 	public void SetFlagAmountText(int amount)
