@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private float loseInstantiateDelay;
 	[SerializeField] private float winInstantiateDelay;
 
-	public float mobileModeFlagTime = 1f;
-
 	[Header("Objects")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;

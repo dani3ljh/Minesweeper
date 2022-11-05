@@ -909,9 +909,8 @@ MonoBehaviour:
   width: 0
   height: 0
   mineAmount: 0
-  loseInstantiateDelay: 0
-  winInstantiateDelay: 0
-  mobileModeFlagTime: 1
+  loseInstantiateDelay: 1
+  winInstantiateDelay: 1
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
   widthInputText: {fileID: 788301752}
