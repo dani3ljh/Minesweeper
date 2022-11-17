@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private Text mineAmountResultsText;
 
 	[Header("Cell Textures")]
-	public Sprite cellBlank;
 	public Sprite cellUnchecked;
+	public Sprite cellBlank;
 	public Sprite[] cellNumbers;
 	public Sprite cellTriggeredMine;
 	public Sprite cellNonTriggeredMine;
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
 		{
 			for(int y = 0; y < height; y++)
 			{
-				GameObject cell = CellLogic.PlaceCell(x, y, height, width);
+				GameObject cell = CellLogic.PlaceCell(x, y, width, height);
 				cells[x, y] = cell;
 				cellStatuses[x, y] = 0;
 				im.xCenters[x] = cell.transform.position.x;

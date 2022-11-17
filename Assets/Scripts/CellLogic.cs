@@ -84,10 +84,8 @@ public class CellLogic : MonoBehaviour
 
 	public static GameObject PlaceCell(int x, int y, int width, int height)
 	{
-		// scale, transformedX, and transformedY are all variables found from algebra so dont change
-		// off when moved to a different script
-		// i redid the algebra for the transformedx its still the same but still not working :(
-		// proof for the algebra: https://femboy.army/​​‌‌​‌​​​‌​‌‌​‌​​‌​​‌​​‌​‌​​​​‌‌​‌‌​‌​‌​​‌‌​‌​‌‌​‌‌​​​‌​​‌​​​‌‌​
+		// make sure to call function with proper arguments
+		// i didnt and couldnt fix the error for like a week
 		float scale = 10f / height;
 		float transformedX = (width * scale * -0.5f) + scale / 2 + (x * scale);
 		float transformedY = 5 - (scale / 2) - (y * scale);
