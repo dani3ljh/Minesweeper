@@ -9,9 +9,9 @@ public class EndScreen : MonoBehaviour
 	[HideInInspector] public GameManager gm;
 	[HideInInspector] public float resetDelay;
 
-	public void ChooseAnotherMode()
+	public void OpenMenu()
 	{
-		gm.ChooseAnotherMode();
+		gm.OpenMenu();
 		Destroy(gameObject);
 	}
 

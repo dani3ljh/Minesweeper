@@ -232,7 +232,7 @@ RectTransform:
   - {fileID: 1217819670}
   - {fileID: 1878106124}
   m_Father: {fileID: 93909764}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -346,9 +346,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1076430141}
+  - {fileID: 1828065282}
   - {fileID: 1707419356}
   - {fileID: 20525101}
-  - {fileID: 1828065282}
   - {fileID: 1350456405}
   m_Father: {fileID: 158381742}
   m_RootOrder: 0
@@ -909,8 +909,8 @@ MonoBehaviour:
   width: 0
   height: 0
   mineAmount: 0
-  loseInstantiateDelay: 0
-  winInstantiateDelay: 0
+  loseInstantiateDelay: 1
+  winInstantiateDelay: 1
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
   widthInputText: {fileID: 788301752}
@@ -2096,8 +2096,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Gamemanager, Assembly-CSharp
+      - m_Target: {fileID: 519420030}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetupGame
         m_Mode: 1
         m_Arguments:
@@ -3609,7 +3609,7 @@ RectTransform:
   - {fileID: 261863315}
   - {fileID: 635212401}
   m_Father: {fileID: 93909764}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3747,7 +3747,7 @@ GameObject:
   - component: {fileID: 1828065283}
   - component: {fileID: 1828065286}
   m_Layer: 5
-  m_Name: Open Menu
+  m_Name: Open Menu Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3766,7 +3766,7 @@ RectTransform:
   m_Children:
   - {fileID: 1164449918}
   m_Father: {fileID: 93909764}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -3817,9 +3817,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Gamemanager, Assembly-CSharp
-        m_MethodName: ChooseAnotherMode
+      - m_Target: {fileID: 519420030}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OpenMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

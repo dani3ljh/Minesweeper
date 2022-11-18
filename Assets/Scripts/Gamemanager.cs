@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 		mobileMode = false;
 	}
 
-	public void ChooseAnotherMode()
+	public void OpenMenu()
 	{
 		isAlive = false;
 		tm.StopTimer();

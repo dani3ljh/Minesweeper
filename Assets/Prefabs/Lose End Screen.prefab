@@ -123,7 +123,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6132166947446652991}
         m_TargetAssemblyTypeName: EndScreen, Assembly-CSharp
-        m_MethodName: ChooseAnotherMode
+        m_MethodName: OpenMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
