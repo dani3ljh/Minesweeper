@@ -34,8 +34,8 @@ public class CellLogic : MonoBehaviour
 				return;
 			}
 
-			gm.cellSpriteRenderers[x, y].sprite = gm.cellTriggeredMine;
 			gm.EndGame(false);
+			gm.cellSpriteRenderers[x, y].sprite = gm.cellTriggeredMine;
 			return;
 		}
 

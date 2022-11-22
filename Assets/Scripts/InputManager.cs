@@ -84,6 +84,15 @@ public class InputManager : MonoBehaviour
 
 	private void RightClick(int x, int y)
 	{
+		if (gm.mines[x, y])
+		{
+			foreach(int[] minePosition in gm.minePositions)
+			{
+				if (!(minePosition[0] == x) || !(minePosition[1] == y)) continue;
+
+				minePosition[2] = minePosition[2] == 1 ? 0 : 1;
+			}
+		}
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:
@@ -98,6 +107,7 @@ public class InputManager : MonoBehaviour
 				break;
 		}
 		uim.SetFlagAmountText(gm.minesNotFlagged);
+
 	}
 
 	private void MiddleClick(int x, int y, int width, int height)

@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public int minesNotFlagged;
 	[HideInInspector] public bool mobileMode;
 	[HideInInspector] public string gameMode;
+	[HideInInspector] public List<int[]> minePositions;
 
 	// Scripts
 	private InputManager im;
@@ -120,6 +121,7 @@ public class GameManager : MonoBehaviour
 
 		// if there are still cells delete them
 		if (cells != null) DeleteCells();
+		minePositions = new List<int[]>();
 
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];
@@ -139,6 +141,7 @@ public class GameManager : MonoBehaviour
 				cellStatuses[x, y] = 0;
 				im.xCenters[x] = cell.transform.position.x;
 				im.yCenters[y] = cell.transform.position.y;
+				if (mines[x, y]) minePositions.Add(new int[3] { x, y, 0 });
 			}
 		}
 	}
@@ -149,6 +152,19 @@ public class GameManager : MonoBehaviour
 		uim.resetButton.interactable = false;
 
 		tm.StopTimer(false);
+
+		if (!win)
+		{
+			foreach(int[] minePosition in minePositions)
+			{
+				if (minePosition[2] == 1) continue;
+
+				int x = minePosition[0];
+				int y = minePosition[1];
+
+				cellSpriteRenderers[x, y].sprite = cellNonTriggeredMine;
+			}
+		}
 		
 		// make end screen after delay
 		uim.Invoke(win 

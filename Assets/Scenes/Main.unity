@@ -909,8 +909,8 @@ MonoBehaviour:
   width: 0
   height: 0
   mineAmount: 0
-  loseInstantiateDelay: 1
-  winInstantiateDelay: 1
+  loseInstantiateDelay: 2
+  winInstantiateDelay: 3
   cellPrefab: {fileID: 8028829544409983571, guid: d622581a1f2b24d4c9dd18eb74c8908a, type: 3}
   cellFolder: {fileID: 2012467821}
   widthInputText: {fileID: 788301752}
@@ -930,8 +930,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f514615469e7d76429e41f81535222d7, type: 3}
   - {fileID: 21300000, guid: 77399c445685c974b8a90594a3818f88, type: 3}
   - {fileID: 21300000, guid: 0bab6ac5ea6852f40adf69f4125b188a, type: 3}
-  cellTriggeredMine: {fileID: 2117776403335930261, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cellNonTriggeredMine: {fileID: 6055628884902258786, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  cellTriggeredMine: {fileID: 21300000, guid: ec057efaa4b9e1d4284f5d9e4bf07aa1, type: 3}
+  cellNonTriggeredMine: {fileID: 21300000, guid: 6075bab517170e94a9b6aa6d3983c3d6, type: 3}
   cellCrossedMine: {fileID: 8399218329143311966, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellFlagged: {fileID: 21300000, guid: 159b4e4d124063a4d84a5939172dfe77, type: 3}
   isAlive: 0
