@@ -592,7 +592,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ed68cf6062a4f954da1ad329e359fe62, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba1ea00dd410ab94084f96a8f962126b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -919,21 +919,21 @@ MonoBehaviour:
   widthResultsText: {fileID: 20882134}
   heightResultsText: {fileID: 1305522238}
   mineAmountResultsText: {fileID: 1829538010}
-  cellUnchecked: {fileID: 7868535118147067289, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cellBlank: {fileID: -1245595124908343168, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  cellUnchecked: {fileID: 21300000, guid: 539bf46d976c3f64eaa4d70f2e71600d, type: 3}
+  cellBlank: {fileID: 21300000, guid: 8655c05e44abc3045adda7624bb19ae7, type: 3}
   cellNumbers:
-  - {fileID: 754334577844753409, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  - {fileID: 6397999009731111452, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  - {fileID: -5961404721340164942, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  - {fileID: -2025472624686135625, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  - {fileID: 2835149172500896349, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  - {fileID: -6649681457660573240, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  - {fileID: 2085528991243181363, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  - {fileID: -2166235467193450904, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  - {fileID: 21300000, guid: aeb4af0f9b974c14c8c1cbb845fd5d17, type: 3}
+  - {fileID: 21300000, guid: c8a27d1c130396a4f8475dd4340eba7c, type: 3}
+  - {fileID: 21300000, guid: e98062849e4405140984cae2643b2752, type: 3}
+  - {fileID: 21300000, guid: 4acb86a9a62777444a71f6b48f0b0864, type: 3}
+  - {fileID: 21300000, guid: 5594cb821865a0745a97dc4d8826c5b4, type: 3}
+  - {fileID: 21300000, guid: f514615469e7d76429e41f81535222d7, type: 3}
+  - {fileID: 21300000, guid: 77399c445685c974b8a90594a3818f88, type: 3}
+  - {fileID: 21300000, guid: 0bab6ac5ea6852f40adf69f4125b188a, type: 3}
   cellTriggeredMine: {fileID: 2117776403335930261, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellNonTriggeredMine: {fileID: 6055628884902258786, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
   cellCrossedMine: {fileID: 8399218329143311966, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
-  cellFlagged: {fileID: 6332592771430846871, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  cellFlagged: {fileID: 21300000, guid: 159b4e4d124063a4d84a5939172dfe77, type: 3}
   isAlive: 0
   cellsMined: 0
   cellsNotMined: 0
@@ -2353,7 +2353,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -49.996628}
+  m_AnchoredPosition: {x: 50, y: -49.999985}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1217819671
@@ -2376,7 +2376,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7868535118147067289, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 539bf46d976c3f64eaa4d70f2e71600d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
