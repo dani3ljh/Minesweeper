@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
 
 		// if there are still cells delete them
 		if (cells != null) DeleteCells();
+		
 		minePositions = new List<int[]>();
 
 		cells = new GameObject[width, height];

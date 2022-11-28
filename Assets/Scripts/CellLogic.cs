@@ -25,11 +25,24 @@ public class CellLogic : MonoBehaviour
 		{
 			if (gm.cellsMined == 0)
 			{
+				// Remove the mine from the first cell clicked
+				
+				// Remove mine from data
 				gm.mines[x, y] = false;
 				gm.cellStatuses[x, y] = 0;
+				int[] minePosToRemove = gm.minePositions.Find(minePos => minePos[0] == x && minePos[1] == y);
+				gm.minePositions.Remove(minePosToRemove);
+				// Debug.Log("Removed mine from cell (" + x + ", " + y+")");
+				
+				// Find open cell and place mine there
 				int[][] freeIndexes = GetFreeIndexes(gm.mines.ToJaggedArray());
 				int index = Random.Range(0, freeIndexes.Length);
-				gm.mines[freeIndexes[index][0], freeIndexes[index][1]] = true;
+				int newX = freeIndexes[index][0]; int newY = freeIndexes[index][1];
+				gm.mines[newX, newY] = true;
+				gm.minePositions.Add(new int[] { newX, newY, 0 });
+				// Debug.Log("Placed mine in cell (" + newX + ", " + newY + ")");
+				
+				// Mine the new cell
 				MineCell(x, y, width, height);
 				return;
 			}
