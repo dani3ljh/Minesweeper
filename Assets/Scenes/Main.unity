@@ -932,7 +932,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0bab6ac5ea6852f40adf69f4125b188a, type: 3}
   cellTriggeredMine: {fileID: 21300000, guid: ec057efaa4b9e1d4284f5d9e4bf07aa1, type: 3}
   cellNonTriggeredMine: {fileID: 21300000, guid: 6075bab517170e94a9b6aa6d3983c3d6, type: 3}
-  cellCrossedMine: {fileID: 8399218329143311966, guid: 93ff3bf138aac9045be8466c3ad1ca7f, type: 3}
+  cellCrossedMine: {fileID: 21300000, guid: 82f2c9660426250449740d7cf2b83eac, type: 3}
   cellFlagged: {fileID: 21300000, guid: 159b4e4d124063a4d84a5939172dfe77, type: 3}
   isAlive: 0
   cellsMined: 0
@@ -1024,16 +1024,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1955404459c8f44f9df3c035509d703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiCanvas: {fileID: 158381742}
   resetButton: {fileID: 1076430142}
+  openMenuButton: {fileID: 1828065283}
   flagAmountText: {fileID: 635212402}
   cellAmountText: {fileID: 1878106125}
   loseEndScreen: {fileID: 6132166947446652994, guid: bdec05bab322d3a44a83389e57832cc7, type: 3}
   winEndScreen: {fileID: 6132166947446652994, guid: d18e42f1edf27ad4ab89cee4f842cea0, type: 3}
-  startScreenAnim: {fileID: 1582763438}
-  textPopupPrefab: {fileID: 332115273058406743, guid: 76da91ef1fe85254291accba38ad1c44, type: 3}
   loseResetDelay: 1
   winResetDelay: 3
-  uiCanvas: {fileID: 158381742}
+  startScreenAnim: {fileID: 1582763438}
+  textPopupPrefab: {fileID: 332115273058406743, guid: 76da91ef1fe85254291accba38ad1c44, type: 3}
 --- !u!114 &519420035
 MonoBehaviour:
   m_ObjectHideFlags: 0

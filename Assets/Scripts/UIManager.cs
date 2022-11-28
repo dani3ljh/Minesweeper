@@ -5,17 +5,27 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-	public Button resetButton;
+	[SerializeField] private Transform uiCanvas;
 	
+	[Header("Buttons")]
+	public Button resetButton;
+	public Button openMenuButton;
+	
+	[Header("Amount Info Texts")]
 	[SerializeField] private Text flagAmountText;
 	[SerializeField] private Text cellAmountText;
+	
+	[Header("End Screens Data")]
 	[SerializeField] private GameObject loseEndScreen;
 	[SerializeField] private GameObject winEndScreen;
-	[SerializeField] private Animator startScreenAnim;
-	[SerializeField] private GameObject textPopupPrefab;
 	[SerializeField] private float loseResetDelay;
 	[SerializeField] private float winResetDelay;
-	[SerializeField] private Transform uiCanvas;
+	
+	[Header("Start Screen")]
+	[SerializeField] private Animator startScreenAnim;
+	
+	[Header("Menu Screen")]
+	[SerializeField] private GameObject textPopupPrefab;
 
 	private GameManager gm;
 

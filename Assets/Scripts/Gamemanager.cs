@@ -7,15 +7,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	[Header("Board Settings")]
+	[SerializeField] private float loseInstantiateDelay;
+	[SerializeField] private float winInstantiateDelay;
 	[HideInInspector] public int width;
 	[HideInInspector] public int height;
 	[HideInInspector] public int mineAmount;
-	[SerializeField] private float loseInstantiateDelay;
-	[SerializeField] private float winInstantiateDelay;
 
 	[Header("Objects")]
 	[SerializeField] private GameObject cellPrefab;
 	[SerializeField] private Transform cellFolder;
+	
+	[Header("Inputs")]
 	[SerializeField] private Text widthInputText;
 	[SerializeField] private Text heightInputText;
 	[SerializeField] private Text mineAmountInputText;
@@ -52,15 +54,14 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public int minesNotFlagged;
 	[HideInInspector] public bool mobileMode;
 	[HideInInspector] public string gameMode;
+	// Cell Data
 	[HideInInspector] public List<int[]> minePositions;
+	[HideInInspector] public List<int[]> missFlaggedPositions;
 
 	// Scripts
 	private InputManager im;
 	private UIManager uim;
 	private TimerManager tm;
-
-	// Color
-	[HideInInspector] public Color cameraBackgroundColor;
 
 	private void Start()
 	{
@@ -94,17 +95,22 @@ public class GameManager : MonoBehaviour
 	{
 		gameMode = mode;
 		uim.StartScreenRise();
+		
 		Invoke(nameof(SetupGame), 0.5f);
 	}
 
 	public void SetupGame()
 	{
 		isAlive = true;
-		uim.resetButton.interactable = true;
 		
-		if(width==0) width = 16;
-		if(height==0) height = 13;
-		if(mineAmount==0) mineAmount = (int)(width*height*0.193f);
+		uim.resetButton.interactable = true;
+		uim.openMenuButton.interactable = true;
+		
+		
+		// Update the board settings using defaults or input
+		width = GetWidth(16);
+		height = GetHeight(13);
+		mineAmount = GetMineAmount((int)(width*height*0.193f));
 		
 		heightResultsText.text = "Height: " + height.ToString();
 		widthResultsText.text = "Width: " + width.ToString();
@@ -122,7 +128,9 @@ public class GameManager : MonoBehaviour
 		// if there are still cells delete them
 		if (cells != null) DeleteCells();
 		
+		// Clear Cell data
 		minePositions = new List<int[]>();
+		missFlaggedPositions = new List<int[]>();
 
 		cells = new GameObject[width, height];
 		cellStatuses = new int[width, height];
@@ -151,11 +159,14 @@ public class GameManager : MonoBehaviour
 	{
 		isAlive = false;
 		uim.resetButton.interactable = false;
+		uim.openMenuButton.interactable = false;
 
 		tm.StopTimer(false);
 
 		if (!win)
 		{
+			// Make mine types visible
+			
 			foreach(int[] minePosition in minePositions)
 			{
 				if (minePosition[2] == 1) continue;
@@ -164,6 +175,14 @@ public class GameManager : MonoBehaviour
 				int y = minePosition[1];
 
 				cellSpriteRenderers[x, y].sprite = cellNonTriggeredMine;
+			}
+			
+			foreach(int[] missFlaggedPosition in missFlaggedPositions)
+			{
+				int x = missFlaggedPosition[0];
+				int y = missFlaggedPosition[1];
+
+				cellSpriteRenderers[x, y].sprite = cellCrossedMine;
 			}
 		}
 		
@@ -188,18 +207,24 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
-	public void UpdateHeight(){
-		// int.Parse in theory should be safe because of the input field is set to only allow numbers
-		height = int.Parse(heightInputText.text);
+	private int GetHeight(int Default){
+		string text = heightInputText.text;
+		int number = string.IsNullOrEmpty(text) ? 0 : int.Parse(text);
+		if(number <= 0) number = Default;
+		return number;
 	}
 	
-	public void UpdateWidth(){
-		// int.Parse in theory should be safe because of the input field is set to only allow numbers
-		width = int.Parse(widthInputText.text);
+	private int GetWidth(int Default){
+		string text = widthInputText.text;
+		int number = string.IsNullOrEmpty(text) ? 0 : int.Parse(text);
+		if(number <= 0) number = Default;
+		return number;
 	}
 	
-	public void UpdateMineAmount(){
-		// int.Parse in theory should be safe because of the input field is set to only allow numbers
-		mineAmount = int.Parse(mineAmountInputText.text);
+	private int GetMineAmount(int Default){
+		string text = mineAmountInputText.text;
+		int number = string.IsNullOrEmpty(text) ? 0 : int.Parse(text);
+		if(number <= 0) number = Default;
+		return number;
 	}
 }

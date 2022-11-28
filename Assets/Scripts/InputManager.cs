@@ -22,7 +22,6 @@ public class InputManager : MonoBehaviour
 
 		cellFlagged = gm.cellFlagged;
 		cellUnchecked = gm.cellUnchecked;
-		gm.cameraBackgroundColor = Camera.main.backgroundColor;
 	}
 
 	void Update()
@@ -93,17 +92,23 @@ public class InputManager : MonoBehaviour
 				minePosition[2] = minePosition[2] == 1 ? 0 : 1;
 			}
 		}
+		
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:
 				gm.cellSpriteRenderers[x, y].sprite = cellFlagged;
 				gm.cellStatuses[x, y] = 10;
 				gm.minesNotFlagged--;
+				if (!gm.mines[x, y]) gm.missFlaggedPositions.Add(new int[] { x, y });
 				break;
 			case 10:
 				gm.cellSpriteRenderers[x, y].sprite = cellUnchecked;
 				gm.cellStatuses[x, y] = 0;
 				gm.minesNotFlagged++;
+				if (!gm.mines[x, y]){
+					int[] missFlaggedPosition = gm.missFlaggedPositions.Find(position => position[0] == x && position[1] == y);
+					gm.missFlaggedPositions.Remove(missFlaggedPosition);
+				}
 				break;
 		}
 		uim.SetFlagAmountText(gm.minesNotFlagged);
