@@ -14,7 +14,10 @@ public class UIManager : MonoBehaviour
 	[Header("Amount Info Texts")]
 	[SerializeField] private Text flagAmountText;
 	[SerializeField] private Text cellAmountText;
-	
+	[SerializeField] private Text widthResultsText;
+	[SerializeField] private Text heightResultsText;
+	[SerializeField] private Text mineAmountResultsText;
+
 	[Header("End Screens Data")]
 	[SerializeField] private GameObject loseEndScreen;
 	[SerializeField] private GameObject winEndScreen;
@@ -42,7 +45,9 @@ public class UIManager : MonoBehaviour
 			"In Lying Mode Cells will be one off of their actual value. \n" +
 			"For example if a cell said 2 that either means there are 3 mines around it or 1. \n" +
 			"Logically 0s will always be 1, 1s will always be 2 and 8s will always be 7. \n" +
+			"This mode is recommended for a lower minecount \n" +
 			"Also you can't middle click in this mode."
+
 		},
 		{"controls", 
 			"There are 3 input types: A left click, a right click, and A middle click. \n" +
@@ -86,13 +91,12 @@ public class UIManager : MonoBehaviour
 
 	public void CreateTextPopup(string textKey)
 	{
-		if (!textPopups.ContainsKey(textKey))
-		{
-			Debug.Log($"Textpopups doesnt contain key {textKey}");
-			return;
-		}
-		
 		TextPopup textPopupScript = Instantiate(textPopupPrefab, uiCanvas).GetComponent<TextPopup>();
+
+		// If dictionary doesnt contain key throw exepction, which stops the function call
+		if (!textPopups.ContainsKey(textKey)) 
+		throw new System.Exception($"Dictionary doesn't contain {textKey}");
+
 		textPopupScript.SetText(textPopups[textKey]);
 	}
 
@@ -104,5 +108,12 @@ public class UIManager : MonoBehaviour
 	public void StartScreenFall()
 	{
 		startScreenAnim.SetTrigger("Fall");
+	}
+
+	public void UpdateResults()
+	{
+		widthResultsText.text = "Width: " + gm.width.ToString();
+		heightResultsText.text = "Height: " + gm.height.ToString();
+		mineAmountResultsText.text = "Mines: " + gm.mineAmount.ToString();
 	}
 }

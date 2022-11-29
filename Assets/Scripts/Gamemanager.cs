@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+	private readonly Dictionary<string, float> modeMinePercents = new Dictionary<string, float>()
+	{
+		{ "normal", 19.3f },
+		{ "oneOff", 10f }
+	};
+
 	[Header("Board Settings")]
 	[SerializeField] private float loseInstantiateDelay;
 	[SerializeField] private float winInstantiateDelay;
@@ -21,9 +27,6 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private Text widthInputText;
 	[SerializeField] private Text heightInputText;
 	[SerializeField] private Text mineAmountInputText;
-	[SerializeField] private Text widthResultsText;
-	[SerializeField] private Text heightResultsText;
-	[SerializeField] private Text mineAmountResultsText;
 
 	[Header("Cell Textures")]
 	public Sprite cellUnchecked;
@@ -62,6 +65,7 @@ public class GameManager : MonoBehaviour
 	private InputManager im;
 	private UIManager uim;
 	private TimerManager tm;
+
 
 	private void Start()
 	{
@@ -110,11 +114,11 @@ public class GameManager : MonoBehaviour
 		// Update the board settings using defaults or input
 		width = GetWidth(16);
 		height = GetHeight(13);
-		mineAmount = GetMineAmount((int)(width*height*0.193f));
-		
-		heightResultsText.text = "Height: " + height.ToString();
-		widthResultsText.text = "Width: " + width.ToString();
-		mineAmountResultsText.text = "Mines: " + mineAmount.ToString();
+		float decimalMineRatio = 0.193f;
+		if (modeMinePercents.ContainsKey(gameMode)) decimalMineRatio = modeMinePercents[gameMode]/100;
+		mineAmount = GetMineAmount((int)(width*height*decimalMineRatio));
+
+		uim.UpdateResults();
 		
 		cellsMined = 0;
 		cellsNotMined = (width * height) - mineAmount;
