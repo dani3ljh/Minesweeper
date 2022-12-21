@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
 	[HideInInspector] public float[] yCenters;
 
 	private GameManager gm;
+	private AudioManager am;
 	private UIManager uim;
 
 	private Sprite cellFlagged;
@@ -18,6 +19,7 @@ public class InputManager : MonoBehaviour
 	void Start()
 	{
 		gm = gameObject.GetComponent<GameManager>();
+		am = gameObject.GetComponent<AudioManager>();
 		uim = gameObject.GetComponent<UIManager>();
 
 		cellFlagged = gm.cellFlagged;
@@ -73,7 +75,10 @@ public class InputManager : MonoBehaviour
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:
-				CellLogic.MineCell(x, y, width, height);
+				int resultOfMine = CellLogic.MineCell(x, y, width, height);
+				if(resultOfMine == 0) am.PlaySound("Mine");
+				if (resultOfMine == 1) am.PlaySound("Lose");
+				if (resultOfMine == 2) am.PlaySound("Win");
 				break;
 			case int n when (n >= 1 && n <= 8):
 				MiddleClick(x, y, width, height);
@@ -96,12 +101,14 @@ public class InputManager : MonoBehaviour
 		switch (gm.cellStatuses[x, y])
 		{
 			case 0:
+				am.PlaySound("Flag");
 				gm.cellSpriteRenderers[x, y].sprite = cellFlagged;
 				gm.cellStatuses[x, y] = 10;
 				gm.minesNotFlagged--;
 				if (!gm.mines[x, y]) gm.missFlaggedPositions.Add(new int[] { x, y });
 				break;
 			case 10:
+				am.PlaySound("Unflag");
 				gm.cellSpriteRenderers[x, y].sprite = cellUnchecked;
 				gm.cellStatuses[x, y] = 0;
 				gm.minesNotFlagged++;
@@ -146,6 +153,10 @@ public class InputManager : MonoBehaviour
 
 		if (totalSurroundingFlags == gm.cellStatuses[x, y])
 		{
+			bool lost = false;
+			bool won = false;
+			bool mined = false;
+			
 			for (int i = 0; i < 8; i++)
 			{
 				int newX = x + indexOffsets[i, 0];
@@ -155,8 +166,24 @@ public class InputManager : MonoBehaviour
 				{
 					continue;
 				}
-
-				if (gm.cellStatuses[newX, newY] == 0) CellLogic.MineCell(newX, newY, gm.width, gm.height);
+				
+				if (gm.cellStatuses[newX, newY] == 0) 
+				{
+					int resultOfMine = CellLogic.MineCell(newX, newY, width, height);
+					if (resultOfMine == 0) mined = true;
+					if (resultOfMine == 1) lost = true;
+					if (resultOfMine == 2) won = true;
+				}
+			}
+			
+			if (lost) {
+				am.PlaySound("Lose");
+			}
+			if (won) {
+				am.PlaySound("Win");
+			}
+			if (mined) {
+				am.PlaySound("Mine");
 			}
 		}
 	}

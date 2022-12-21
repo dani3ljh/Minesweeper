@@ -12,10 +12,11 @@ public class CellLogic : MonoBehaviour
 
 	public static GameObject cellPrefab;
 	public static Transform cellFolder;
-
-	public static void MineCell(int x, int y, int width, int height)
+	
+	/// <returns> Returns the success of the mine ex: -1 = cell cant be mined, 0 = mine cell, 1 = mine bomb, 2 = mine last cell </returns>
+	public static int MineCell(int x, int y, int width, int height)
 	{
-		if (gm.cellStatuses[x, y] != 0) return;
+		if (gm.cellStatuses[x, y] != 0) return -1;
 
 		int cellNumber = GetCellType(x, y, gm.mines);
 
@@ -43,13 +44,12 @@ public class CellLogic : MonoBehaviour
 				// Debug.Log("Placed mine in cell (" + newX + ", " + newY + ")");
 				
 				// Mine the new cell
-				MineCell(x, y, width, height);
-				return;
+				return MineCell(x, y, width, height);
 			}
 
 			gm.EndGame(false);
 			gm.cellSpriteRenderers[x, y].sprite = gm.cellTriggeredMine;
-			return;
+			return 1;
 		}
 
 		if (gm.cellsMined == 0) tm.StartTimer();
@@ -58,15 +58,18 @@ public class CellLogic : MonoBehaviour
 		gm.cellsNotMined--;
 		uim.SetCellAmountText(gm.cellsNotMined);
 
-
-		if (gm.cellsMined == width * height - gm.mineAmount) gm.EndGame(true);
+		bool win = gm.cellsMined == width * height - gm.mineAmount;
+		
+		if (win) gm.EndGame(true);
 
 		if (cellNumber != 0)
 		{
 			gm.cellSpriteRenderers[x, y].sprite = gm.cellNumbers[cellNumber - 1];
-			return;
+			return win ? 2 : 0;
 		}
-
+		
+		if(win) return 2;
+		
 		gm.cellStatuses[x, y] = 9;
 
 		gm.cellSpriteRenderers[x, y].sprite = gm.cellBlank;
@@ -81,6 +84,7 @@ public class CellLogic : MonoBehaviour
 			{ 0, -1 },
 			{ -1, -1 }
 		};
+		bool winAfterSweepMine = false;
 		for (int i = 0; i < 8; i++)
 		{
 			int checkX = x + indexOffsets[i, 0];
@@ -91,8 +95,13 @@ public class CellLogic : MonoBehaviour
 				continue;
 			}
 
-			MineCell(checkX, checkY, width, height);
+			if (MineCell(checkX, checkY, width, height) == 2)
+			{
+				winAfterSweepMine = true;
+			}
 		}
+		
+		return winAfterSweepMine ? 2 : 0;
 	}
 
 	public static GameObject PlaceCell(int x, int y, int width, int height)

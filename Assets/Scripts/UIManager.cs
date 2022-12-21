@@ -56,6 +56,11 @@ public class UIManager : MonoBehaviour
 			"To right click press the right mouse button and release on the cell you want to flag. \n" +
 			"To middle click press either the scroll button or left click button on a cleared cell. \n" +
 			"Middle clicking on a cell with equal to or more flags around it than its number will clear all un checked cells around it."
+		},
+		{"credits",
+			"Title font: https://fonts.google.com/specimen/Black+Ops+One \n" +
+			"Text font: https://www.dafont.com/highvoltage-rough.font \n" +
+			"Sound fx from: https://sfxr.me/ \n"
 		}
 	};
 
