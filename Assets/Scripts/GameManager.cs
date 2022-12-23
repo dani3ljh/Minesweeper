@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+private readonly Dictionary<string, float> modeMinePercents = new Dictionary<string, float>()
+{
+	{ "normal", 19.3f },
+	{ "oneOff", 10f }
+};
+
 public class GameManager : MonoBehaviour
 {
-	private readonly Dictionary<string, float> modeMinePercents = new Dictionary<string, float>()
-	{
-		{ "normal", 19.3f },
-		{ "oneOff", 10f }
-	};
-
 	[Header("Board Settings")]
 	[SerializeField] private float loseInstantiateDelay;
 	[SerializeField] private float winInstantiateDelay;
@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public int minesNotFlagged;
 	[HideInInspector] public bool mobileMode;
 	[HideInInspector] public string gameMode;
+
 	// Cell Data
 	[HideInInspector] public List<int[]> minePositions;
 	[HideInInspector] public List<int[]> missFlaggedPositions;
@@ -65,7 +66,6 @@ public class GameManager : MonoBehaviour
 	private InputManager im;
 	private UIManager uim;
 	private TimerManager tm;
-
 
 	private void Start()
 	{
