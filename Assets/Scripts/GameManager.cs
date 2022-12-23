@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-private readonly Dictionary<string, float> modeMinePercents = new Dictionary<string, float>()
-{
-	{ "normal", 19.3f },
-	{ "oneOff", 10f }
-};
-
 public class GameManager : MonoBehaviour
 {
+	private readonly Dictionary<string, float> modeMinePercents = new Dictionary<string, float>()
+	{
+		{ "normal", 19.3f },
+		{ "oneOff", 10f }
+	};
+
 	[Header("Board Settings")]
 	[SerializeField] private float loseInstantiateDelay;
 	[SerializeField] private float winInstantiateDelay;
