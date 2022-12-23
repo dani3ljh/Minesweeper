@@ -58,9 +58,12 @@ public class UIManager : MonoBehaviour
 			"Middle clicking on a cell with equal to or more flags around it than its number will clear all un checked cells around it."
 		},
 		{"credits",
+			"Assets \n\n" +
 			"Title font: https://fonts.google.com/specimen/Black+Ops+One \n" +
 			"Text font: https://www.dafont.com/highvoltage-rough.font \n" +
-			"Sound fx from: https://sfxr.me/ \n"
+			"Sound fx from: https://sfxr.me/ \n" +
+			"Art Program: Pixel Studio \n\n" +
+			"Coding and UI: Daniel Hart \n"
 		}
 	};
 
