@@ -30,6 +30,18 @@ internal static class ExtraMethods
 		}
 		return jaggedArray;
 	}
+	
+	internal static TEnum ToEnum<TEnum>(this string value, TEnum defaultValue)
+		where TEnum : struct/*, IConvertible*/
+	{
+		if (string.IsNullOrEmpty(value))
+		{
+			return defaultValue;
+		}
+
+		TEnum result;
+		return Enum.TryParse<TEnum>(value, true, out result) ? result : defaultValue;
+	}
 }
 
 [Serializable]

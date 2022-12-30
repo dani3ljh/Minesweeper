@@ -29,8 +29,12 @@ public class UIManager : MonoBehaviour
 	
 	[Header("Menu Screen")]
 	[SerializeField] private GameObject textPopupPrefab;
+	
+	[Header("Settings")]
+	[SerializeField] private GameObject settingsPrefab;
 
 	private GameManager gm;
+	private AudioManager am;
 
 	private readonly Dictionary<string, string> textPopups = new Dictionary<string, string>()
 	{
@@ -70,6 +74,7 @@ public class UIManager : MonoBehaviour
 	private void Start()
 	{
 		gm = gameObject.GetComponent<GameManager>();
+		am = gameObject.GetComponent<AudioManager>();
 	}
 
 	public void SetFlagAmountText(int amount)
@@ -106,6 +111,18 @@ public class UIManager : MonoBehaviour
 		throw new System.Exception($"Dictionary doesn't contain {textKey}");
 
 		textPopupScript.SetText(textPopups[textKey]);
+	}
+	
+	public void CreateSettingsPopup()
+	{
+		SettingsPopup settingsPopup = Instantiate(settingsPrefab, uiCanvas).GetComponent<SettingsPopup>();
+		
+		settingsPopup.gm = gm;
+		settingsPopup.am = am;
+		
+		settingsPopup.mainVolumeSlider.value = am.mainVolume;
+		settingsPopup.sfxVolumeSlider.value = am.sfxVolume;
+		settingsPopup.endSfxVolumeSlider.value = am.endSfxVolume;
 	}
 
 	public void StartScreenRise()
