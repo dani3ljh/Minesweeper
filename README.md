@@ -1,1 +1,3 @@
-<h1>My Black Belt Game</h1>
+# My Black Belt Game
+
+Reflecting back on this project, I feel I overcomplicated some things. For example the code detecting which square you click is way more complicated than it needed to be due to using world space objects rather than ui objects. I feel I could've easily added background music aswell with a sound system already made this feels like an easy addition. I think the menu is confusing as having the info, game size, mine count, and the start buttons be all on one screen makes it difficult to understand. I think I could have made the game selection multiple screens (choose a mode, then the specifications of the game, then start) and maybe putting the info section in a different area. I also think I should've input checked the size and mine count (right now it doesn't even check for negative numbers lol).
